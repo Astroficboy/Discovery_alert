@@ -1,0 +1,49 @@
+{
+  "status": 200,
+  "response": {
+    "rowCount": 2,
+    "rows": [
+      {
+        "id": "edanmdm-nmah_1234",
+        "title": "Moog Modular Synthesizer",
+        "content": {
+          "descriptiveNonRepeating": {
+            "unit_code": "NMAH",
+            "record_link": "https://americanhistory.si.edu/collections/object/nmah_1234",
+            "guid": "http://n2t.net/ark:/65665/1234",
+            "online_media": {
+              "mediaCount": 1,
+              "media": [
+                {
+                  "thumbnail": "https://ids.si.edu/ids/deliveryService?id=NMAH-1234_thumb",
+                  "content": "https://ids.si.edu/ids/deliveryService?id=NMAH-1234",
+                  "usage": {"access": "CC0"}
+                }
+              ]
+            }
+          },
+          "freetext": {
+            "notes": [{"label": "Description", "content": "A modular synthesizer built in 1967, patched with cables rather than programmed."}],
+            "physicalDescription": [{"label": "Overall", "content": "Wood cabinet, steel panels"}]
+          },
+          "indexedStructured": {
+            "topic": ["Music", "Electronic instruments"],
+            "name": ["Robert Moog"],
+            "date": ["1967"],
+            "place": ["United States"]
+          }
+        }
+      },
+      {
+        "id": "edanmdm-nmah_9999",
+        "title": "A restricted object",
+        "content": {
+          "descriptiveNonRepeating": {
+            "unit_code": "NMAH",
+            "online_media": {"media": [{"content": "https://ids.si.edu/x", "usage": {"access": "Usage conditions apply"}}]}
+          }
+        }
+      }
+    ]
+  }
+}

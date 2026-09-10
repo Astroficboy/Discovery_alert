@@ -1,0 +1,68 @@
+{{ newsletter_name|upper }}
+Issue #{{ '%03d'|format(issue_number) }} · {{ edition_date_display }}{% if category_label %} · {{ category_label }}{% endif %}
+
+{{ '=' * 64 }}
+
+{{ article.title|upper }}
+{% if article.subtitle %}{{ article.subtitle }}
+
+{% endif %}
+{% if article.content_note %}
+A NOTE BEFORE YOU READ
+{{ article.content_note|wordwrap(72) }}
+{% endif %}
+{{ article.hook|wordwrap(72) }}
+
+{% if article.the_image %}
+WHAT YOU ARE LOOKING AT
+{{ '-' * 64 }}
+{{ article.the_image|wordwrap(72) }}
+{% endif %}
+
+THE STORY
+{{ '-' * 64 }}
+{{ article.story|wordwrap(72) }}
+
+{% if article.bigger_picture %}
+WHY IT MATTERS
+{{ '-' * 64 }}
+{{ article.bigger_picture|wordwrap(72) }}
+{% endif %}
+
+{% if article.one_more_thing %}
+ONE MORE THING
+{{ '-' * 64 }}
+{{ article.one_more_thing|wordwrap(72) }}
+{% endif %}
+
+{% if article.listen %}
+LISTEN TO THIS
+{{ '-' * 64 }}
+{{ article.listen.artist }}{% if article.listen.track %} — {{ article.listen.track }}{% endif %}
+
+{% if article.listen.album or article.listen.year %}{{ article.listen.album }}{% if article.listen.album and article.listen.year %} · {% endif %}{{ article.listen.year }}
+{% endif %}{{ article.listen.url }}
+{% endif %}
+
+{% if music_facts %}
+{% for label, value in music_facts %}{{ label }}: {{ value }}
+{% endfor %}
+{% endif %}
+IMAGE CREDIT
+{{ '-' * 64 }}
+{{ image.credit|wordwrap(72) }}
+{% if image.page_url %}Original record: {{ image.page_url }}
+{% endif %}{% if image.license.url %}Licence: {{ image.license.name }} — {{ image.license.url }}
+{% endif %}
+
+{% if article.sources %}
+SOURCES & FURTHER READING
+{{ '-' * 64 }}
+{% for source in article.sources[:8] %}- {{ source.title }}{% if source.publisher %} ({{ source.publisher }}){% endif %}
+  {{ source.url }}
+{% endfor %}
+{% endif %}
+{{ '=' * 64 }}
+{{ sign_off }}
+{% if footer_note %}{{ footer_note }}
+{% endif %}

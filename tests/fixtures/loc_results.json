@@ -1,0 +1,26 @@
+{
+  "results": [
+    {
+      "id": "https://www.loc.gov/item/2017759988/",
+      "title": "Shipfitter working on a ship at a Navy Yard",
+      "date": "1942",
+      "description": ["A shipfitter photographed on the ways at a Navy Yard, 1942."],
+      "image_url": [
+        "https://tile.loc.gov/storage-services/service/pnp/fsac/1a34000/1a34700/1a34765v.jpg",
+        "https://tile.loc.gov/storage-services/service/pnp/fsac/1a34000/1a34700/1a34765r.jpg"
+      ],
+      "item": {
+        "creator": ["Palmer, Alfred T."],
+        "date": "1942",
+        "notes": ["Transfer from U.S. Office of War Information, 1944."],
+        "rights": "No known restrictions on publication."
+      }
+    },
+    {
+      "id": "https://www.loc.gov/item/2099999999/",
+      "title": "An item with unclear rights",
+      "image_url": ["https://tile.loc.gov/storage-services/service/pnp/x/y.jpg"],
+      "item": {"rights_advisory": ["Rights status not evaluated."]}
+    }
+  ]
+}

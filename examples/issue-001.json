@@ -1,0 +1,40 @@
+{
+  "issue_number": 1,
+  "edition_date": "2026-01-01",
+  "candidate": {
+    "source": "loc",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Lange-MigrantMother02.jpg",
+    "title": "Migrant Mother",
+    "categories": ["photography", "history", "people", "culture"],
+    "image": {
+      "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Lange-MigrantMother02.jpg?width=1200",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Lange-MigrantMother02.jpg",
+      "width": 1200,
+      "height": 1500,
+      "mime_type": "image/jpeg",
+      "title": "Destitute pea pickers in California. Mother of seven children. Age thirty-two. Nipomo, California",
+      "description": "Dorothea Lange's March 1936 photograph, made for the Resettlement Administration in a pea-pickers' camp at Nipomo, California.",
+      "creator": "Dorothea Lange",
+      "created": "March 1936",
+      "institution": "Library of Congress, FSA/OWI Collection",
+      "license": {"raw": "No known restrictions on publication"}
+    }
+  },
+  "article": {
+    "title": "The woman nobody asked to name",
+    "subtitle": "The most reproduced photograph of the Depression, and the forty years before anyone found out who was in it",
+    "hook": "She sat for ten minutes. The photographer took six frames, filed them with a caption that recorded her age and the number of her children but not her name, and drove on. The picture went around the world within a week. It was another forty-two years before anyone printed who she was.",
+    "the_image": "A woman of thirty-two in a lean-to tent at the edge of a frozen pea field, two children turned away from the camera against her shoulders, an infant in her lap. Her hand is at her jaw. The photograph was made in March 1936 by Dorothea Lange, working for the Resettlement Administration, a New Deal agency that employed photographers to document rural poverty and, not incidentally, to argue for its own budget. The negative is held by the Library of Congress and carries no known restrictions on publication, which is part of why you have seen it before.",
+    "story": "Lange was driving home to Berkeley at the end of a month in the field when she passed a hand-lettered sign for a pea-pickers' camp at Nipomo. She drove on for twenty miles, turned around, and went back. By her own later account she made the pictures in about ten minutes and asked almost nothing: she did not take the woman's name, and she did not write down what she had been told beyond the bare facts that went into the caption.\n\nThe crop had frozen. There was no work and no pay, and the camp held something like two thousand five hundred people with nothing to do but wait. Lange's negatives went to Washington and then, unusually fast, to the San Francisco News, which ran two of them within days under a story about starvation in the camps. Federal food aid was dispatched. The family had already moved on.\n\nThere are six exposures in the sequence, and they are worth looking at together, because they show a photographer working out what the picture is. The first is wide: the tent, a rocking chair, a teenage daughter, the whole scene. Lange moves closer with each frame. Furniture disappears. The older children turn their faces away. In the last exposure everything that would explain the situation has been removed, and what is left is a face.\n\nThat compression is what made the image portable. It could stand for the Dust Bowl, for the Depression, for migrant labour, for motherhood, for any argument that needed a face. It appeared on a postage stamp. It was used to sell magazines and, later, to advertise things that had nothing to do with it.\n\nOne detail was removed more literally. In the file print at the Library of Congress, a thumb is visible at the lower right edge of the frame, hooked around a tent pole. Before the picture went into wide circulation the thumb was retouched out of the negative — scraped away, permanently. The alteration was not disclosed. It is a small thing, and it is the only physical evidence in the whole sequence that Lange, too, was composing rather than simply recording.\n\nThe woman was Florence Owens Thompson. She was Cherokee, born in Indian Territory in Oklahoma in 1903, and she was not a Dust Bowl migrant at all: she had come to California in the 1920s, years before the drought. She was identified publicly in the late 1970s, after a reporter tracked her down. By then the photograph had been in print for four decades.\n\nShe was not pleased about it. She had received nothing for the picture and had no say in how it was used, and she said, more than once, that she wished Lange had never taken it.",
+    "bigger_picture": "The Resettlement Administration's photography unit produced something like a quarter of a million negatives, and the entire archive was placed in the public domain. That decision is the reason the image was reproduced so widely, and it is also the reason its subject had no leverage over it. Free reuse is not a neutral property of a photograph. It determines who gets to decide what the picture means, and in this case the answer was: everyone except the person in it.\n\nThe caption is the other half of the story. Lange recorded an age, a number of children and a place. A name would have cost nothing and would have made the woman a person rather than a category. The omission was standard practice for documentary work of the period, which is exactly the point — it was invisible until someone went looking.",
+    "one_more_thing": "Thompson's daughter Katherine, the child on the right, said in later interviews that the family had been living on frozen vegetables scavenged from the field and birds the children killed. She also said the car in which they were sitting out the freeze had not broken down, as the story is usually told: they had sold the tyres to buy food.",
+    "listen": null,
+    "content_note": "This story involves severe poverty and hunger.",
+    "sources": [
+      {"title": "Farm Security Administration/Office of War Information Black-and-White Negatives", "url": "https://www.loc.gov/pictures/collection/fsa/", "publisher": "Library of Congress", "authority": 95},
+      {"title": "Dorothea Lange's 'Migrant Mother' Photographs in the FSA Collection", "url": "https://www.loc.gov/rr/print/list/128_migm.html", "publisher": "Library of Congress", "authority": 95},
+      {"title": "Records of the Farm Security Administration", "url": "https://www.archives.gov/", "publisher": "U.S. National Archives", "authority": 95},
+      {"title": "Migrant Mother", "url": "https://en.wikipedia.org/wiki/Migrant_Mother", "publisher": "Wikipedia", "authority": 50}
+    ]
+  }
+}

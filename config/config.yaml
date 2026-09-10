@@ -1,0 +1,305 @@
+# =============================================================================
+# A Curious Thing - editorial configuration
+#
+# Everything that shapes *what* the newsletter is lives here. Credentials live
+# in .env. Environment variables win over this file for the handful of settings
+# that appear in both (timezone, interval, send time, providers, paths).
+# =============================================================================
+
+newsletter:
+  name: "A Curious Thing"
+  tagline: "One remarkable image. The story behind it."
+  # Every alternate day.
+  frequency_days: 2
+  send_time: "08:00"
+  timezone: "Asia/Kolkata"
+  # Anchor date for the alternate-day rhythm (ISO date, reader's timezone).
+  # Send days are anchor, anchor+2, anchor+4, ...
+  epoch_date: "2026-01-01"
+  # Issue numbering starts here.
+  first_issue_number: 1
+  # Footer line. {days} is substituted.
+  sign_off: "Next edition in {days} days."
+
+content:
+  # A candidate must clear this to be sent. Nothing is sent below it - the
+  # schedule is not a reason to send a mediocre edition.
+  min_quality_score: 78.0
+  # Below this, do not even bother researching.
+  min_prefilter_score: 45.0
+  story_word_count:
+    min: 500
+    max: 900
+    # Hard reject outside this wider band (the QC stage will ask for a rewrite
+    # once before giving up).
+    hard_min: 380
+    hard_max: 1150
+
+  # Top-level editorial domains. Add your own freely - they are data, not code.
+  categories:
+    - history
+    - science
+    - space
+    - nature
+    - exploration
+    - engineering
+    - technology
+    - architecture
+    - people
+    - culture
+    - photography
+    - music
+    - mystery
+
+  # A category is discouraged (not banned) for this many days after it runs.
+  avoid_recent_days: 30
+  # Full-strength cooldown for the exact same subject/entity.
+  entity_cooldown_days: 180
+  # Similarity above this to any edition inside avoid_recent_days = rejected.
+  duplicate_similarity_threshold: 0.62
+
+  # Editorial safety. The pipeline still covers wars, disasters and death -
+  # it just does not lead with gratuitous imagery.
+  safety:
+    avoid_graphic_imagery: true
+    require_content_note_for:
+      - atrocity
+      - human_remains
+      - execution
+      - graphic_injury
+    banned_terms: []
+
+# -----------------------------------------------------------------------------
+# Music is a first-class domain, with its own metadata vocabulary.
+# Genres/subjects are metadata, not rigid buckets: a story can carry several.
+# -----------------------------------------------------------------------------
+music:
+  # Share of editions that should be music-led, as a soft target. The rotation
+  # bonus nudges towards it; quality always wins.
+  target_share: 0.15
+  genres:
+    rock: [classic_rock, progressive_rock, alternative_rock, indie_rock, hard_rock,
+           psychedelic_rock, garage_rock, art_rock, post_rock, experimental_rock]
+    metal: [heavy_metal, thrash_metal, death_metal, black_metal, doom_metal,
+            sludge_metal, progressive_metal, power_metal, symphonic_metal,
+            folk_metal, gothic_metal, industrial_metal, metalcore, deathcore,
+            post_metal, avant_garde_metal]
+    punk: [punk, hardcore_punk, post_punk, pop_punk, crust_punk, emo, screamo,
+           grindcore]
+    electronic: [ambient, idm, techno, house, trance, drum_and_bass, jungle,
+                 dubstep, industrial, synthwave, experimental_electronic,
+                 musique_concrete]
+    jazz: [bebop, cool_jazz, free_jazz, fusion, modal_jazz, avant_garde_jazz,
+           swing]
+    blues: [delta_blues, chicago_blues, electric_blues, blues_rock]
+    classical: [baroque, classical_period, romantic, modern_classical,
+                contemporary_classical, minimalism, experimental_classical,
+                opera]
+    folk: [folk, traditional, celtic, appalachian, sea_shanty]
+    indian_classical: [hindustani, carnatic, dhrupad, thumri]
+    world: [african_traditional, middle_eastern, gamelan, throat_singing,
+            latin_american, caribbean, balkan, nordic_folk, southeast_asian,
+            indigenous, east_asian_traditional]
+    pop: [pop, art_pop, synth_pop, dream_pop, experimental_pop, city_pop]
+    hip_hop: [old_school_hip_hop, golden_age, east_coast, west_coast,
+              underground_hip_hop, experimental_hip_hop]
+    reggae: [reggae, dub, ska, dancehall, calypso]
+  subjects:
+    - musicians
+    - albums
+    - songs
+    - concerts
+    - festivals
+    - instruments
+    - percussion
+    - recording
+    - production
+    - technology
+    - venues
+    - studios
+    - labels
+    - radio
+    - music_history
+    - music_culture
+    - music_science
+  eras: [pre_1900, 1900s, 1910s, 1920s, 1930s, 1940s, 1950s, 1960s, 1970s,
+         1980s, 1990s, 2000s, 2010s, 2020s]
+  # Don't let the newsletter become anglophone-only. Regions under this share
+  # of recent music editions get a discovery boost.
+  global_balance:
+    dominant_regions: [united_states, united_kingdom]
+    max_dominant_share: 0.6
+
+# -----------------------------------------------------------------------------
+# Editorial scoring. Weights are normalised at load time, so they need not
+# sum to 1.0 - relative size is what matters.
+# -----------------------------------------------------------------------------
+scoring:
+  weights:
+    visual_score: 0.20
+    story_score: 0.20
+    novelty_score: 0.15
+    significance_score: 0.15
+    curiosity_score: 0.15
+    source_quality: 0.10
+    image_quality: 0.05
+  # Extra dimensions that apply only to music candidates. They are folded into
+  # significance_score/story_score before the weighting above is applied.
+  music_weights:
+    music_significance: 0.40
+    cultural_significance: 0.30
+    technical_significance: 0.30
+  # A story that genuinely spans several domains is the whole point.
+  cross_domain_bonus:
+    per_extra_domain: 2.5
+    max: 7.5
+  # Soft nudge away from whatever ran recently.
+  rotation_bonus_max: 6.0
+  # Subtracted, up to this much, for similarity to recent editions.
+  duplicate_penalty_max: 40.0
+  # Copyright safety is a gate, not a weight: anything not clearly reusable is
+  # dropped before scoring. See src/licensing.py.
+
+# -----------------------------------------------------------------------------
+# The funnel. Cheap work on many candidates, expensive work on very few.
+# -----------------------------------------------------------------------------
+pipeline:
+  discovery_target: 120       # candidates pulled from all sources
+  prefilter_keep: 24          # survive free, heuristic filtering
+  triage_keep: 6              # survive one cheap batched LLM call
+  research_keep: 3            # get real research (network + tokens)
+  deep_score_keep: 2          # get full editorial scoring
+  # How many finalists we are willing to write + QC before giving up on today.
+  write_attempts: 2
+  # If nothing clears min_quality_score, we skip the edition rather than
+  # lower the bar. Set false to send the best available anyway.
+  skip_edition_if_below_threshold: true
+
+discovery:
+  # Per-source config. `enabled: false` or a missing API key just skips it.
+  # Order is irrelevant; sources run concurrently.
+  sources:
+    - name: wikimedia_potd
+      enabled: true
+      limit: 20
+    - name: wikimedia_featured
+      enabled: true
+      limit: 40
+      options:
+        categories:
+          - "Featured pictures of natural phenomena"
+          - "Featured pictures of history"
+          - "Featured pictures of science"
+          - "Featured pictures of engineering and technology"
+          - "Featured pictures of architecture"
+          - "Featured pictures of vehicles"
+    - name: wikimedia_music
+      enabled: true
+      limit: 25
+      options:
+        categories:
+          - "Musical instruments in museums"
+          - "Recording studios"
+          - "Historical photographs of musicians"
+          - "Music festivals in the 20th century"
+          - "Synthesizers"
+          - "Percussion instruments"
+          - "Traditional musical instruments of India"
+          - "Concert photographs"
+    - name: wikipedia
+      enabled: true
+      limit: 16
+    - name: nasa_apod
+      enabled: true
+      limit: 14
+    - name: nasa_images
+      enabled: true
+      limit: 20
+      options:
+        queries: [apollo, voyager, "wind tunnel", "mission control", telescope]
+    - name: loc
+      enabled: true
+      limit: 25
+      options:
+        collections: [fsa-owi-photos, panoramic-photographs, civil-war-glass-negatives]
+        queries: ["photograph", "music"]
+    - name: met_museum
+      enabled: true
+      limit: 15
+      options:
+        departments: ["Musical Instruments", "Photographs", "Arms and Armor"]
+    - name: smithsonian          # needs SMITHSONIAN_API_KEY
+      enabled: true
+      limit: 20
+    - name: europeana            # needs EUROPEANA_API_KEY
+      enabled: true
+      limit: 20
+    - name: fixtures             # bundled offline candidates; safety net only
+      enabled: true
+      limit: 6
+      options:
+        only_when_starved: true
+
+image:
+  min_width: 900
+  min_height: 600
+  # Hero image is resized/served from the source CDN where possible; we never
+  # rehost. Email clients get a width-capped URL when the host supports it.
+  email_display_width: 1200
+  max_download_bytes: 20000000
+  allowed_mime:
+    - image/jpeg
+    - image/png
+    - image/webp
+
+research:
+  # Pages actually fetched and read per finalist.
+  max_pages_per_candidate: 6
+  max_page_chars: 18000
+  # Claims that must be cross-checked against >= this many sources.
+  min_sources_per_edition: 3
+  min_independent_sources_for_key_claim: 2
+  request_timeout_seconds: 20
+  # Only these hosts are ever fetched for research. Prevents the pipeline from
+  # wandering onto (and feeding an LLM) arbitrary parts of the internet.
+  allowed_domains_extra: []
+
+llm:
+  provider: anthropic
+  model: claude-sonnet-5
+  triage_model: claude-haiku-4-5-20251001
+  max_output_tokens: 4096
+  temperature: 0.7
+  # Deterministic settings for the machine-readable stages.
+  analysis_temperature: 0.1
+  timeout_seconds: 120
+  max_retries: 3
+
+quality:
+  # Gate thresholds, 0-100.
+  min_accuracy: 80
+  min_writing: 72
+  min_sourcing: 75
+  # Hard requirements - failing any of these rejects the edition outright.
+  require_image_attribution: true
+  require_source_links: true
+  min_sources: 3
+  max_regeneration_attempts: 1
+
+email:
+  provider: smtp
+  subject_template: "{name} #{issue:03d} - {title}"
+  # Preheader is the grey text next to the subject line in most inboxes.
+  preheader_from_hook: true
+  include_plain_text: true
+  # Small "Listen to this" block on music editions, when a legitimate link exists.
+  music_listen_block: true
+
+storage:
+  database_path: "data/curious.db"
+  # Keep raw run logs for this long; editions are kept forever.
+  run_retention_days: 365
+
+logging:
+  level: INFO
+  format: text

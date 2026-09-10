@@ -1,0 +1,21 @@
+{
+  "tfa": {
+    "type": "standard",
+    "title": "Krakatoa",
+    "titles": {"normalized": "Krakatoa"},
+    "extract": "Krakatoa is a caldera in the Sunda Strait. The 1883 eruption was heard 4,800 kilometres away, the loudest sound in recorded history.",
+    "content_urls": {"desktop": {"page": "https://en.wikipedia.org/wiki/Krakatoa"}},
+    "originalimage": {"source": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Krakatoa.jpg", "width": 2000, "height": 1400},
+    "thumbnail": {"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Krakatoa.jpg/640px-Krakatoa.jpg", "width": 640, "height": 448}
+  },
+  "image": {
+    "title": "File:Sarangi player.jpg",
+    "thumbnail": {"source": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Sarangi.jpg/640px-Sarangi.jpg", "width": 640, "height": 480},
+    "image": {"source": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Sarangi.jpg", "width": 4000, "height": 3000},
+    "file_page": "https://commons.wikimedia.org/wiki/File:Sarangi_player.jpg",
+    "artist": {"text": "A. Photographer"},
+    "credit": {"text": "Own work"},
+    "license": {"type": "CC BY-SA 4.0", "code": "cc-by-sa-4.0"},
+    "description": {"text": "A sarangi player in Rajasthan, photographed during a wedding procession.", "lang": "en"}
+  }
+}

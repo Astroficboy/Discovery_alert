@@ -1,0 +1,188 @@
+# ==============================================================================
+# A Curious Thing - the scheduled edition.
+#
+# HOW THE SCHEDULE ACTUALLY WORKS
+#
+# GitHub Actions cron is UTC-only, has no notion of "every other day", and is
+# best-effort: on a busy hour a scheduled workflow can fire late or be dropped
+# entirely. So this workflow runs *daily*, and the application decides whether
+# today is a send day (see src/scheduler/scheduler.py). That arrangement is
+# robust to a late cron, a missed cron and a double cron - the last of which is
+# handled by the database, which refuses a second edition for the same date.
+#
+# Set the cron below to roughly an hour before your reader's send time in UTC.
+# `python -m src.main schedule` prints the correct line for your configuration.
+#
+# STATE
+#
+# The edition history is a SQLite file committed back to this repository. See
+# the README section "Database and state" for why, and for what to do instead
+# if that stops suiting you.
+# ==============================================================================
+
+name: Newsletter
+
+on:
+  schedule:
+    # 02:30 UTC = 08:00 Asia/Kolkata. Change to match your own timezone.
+    - cron: "30 2 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "What to do"
+        type: choice
+        default: send
+        options: [send, dry-run, review]
+      force:
+        description: "Ignore the schedule and run anyway"
+        type: boolean
+        default: false
+
+# Never let two runs race for the database file.
+concurrency:
+  group: newsletter-edition
+  cancel-in-progress: false
+
+permissions:
+  contents: write     # required only to commit the updated database
+
+jobs:
+  edition:
+    name: Build and send
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          # A shallow clone is enough; we only ever commit one file back.
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check the configuration before doing any work
+        env:
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER || 'anthropic' }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          EMAIL_PROVIDER: ${{ vars.EMAIL_PROVIDER || 'smtp' }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          TIMEZONE: ${{ vars.TIMEZONE || 'Asia/Kolkata' }}
+          LOG_FORMAT: json
+        run: python -m src.main doctor
+
+      - name: Run the pipeline
+        id: pipeline
+        env:
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER || 'anthropic' }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          LLM_TRIAGE_MODEL: ${{ vars.LLM_TRIAGE_MODEL }}
+          EMAIL_PROVIDER: ${{ vars.EMAIL_PROVIDER || 'smtp' }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          EMAIL_REPLY_TO: ${{ secrets.EMAIL_REPLY_TO }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_SECURITY: ${{ vars.SMTP_SECURITY || 'starttls' }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          NASA_API_KEY: ${{ secrets.NASA_API_KEY }}
+          SMITHSONIAN_API_KEY: ${{ secrets.SMITHSONIAN_API_KEY }}
+          EUROPEANA_API_KEY: ${{ secrets.EUROPEANA_API_KEY }}
+          TIMEZONE: ${{ vars.TIMEZONE || 'Asia/Kolkata' }}
+          SEND_INTERVAL_DAYS: ${{ vars.SEND_INTERVAL_DAYS || '2' }}
+          SEND_HOUR: ${{ vars.SEND_HOUR || '8' }}
+          SEND_MINUTE: ${{ vars.SEND_MINUTE || '0' }}
+          HTTP_USER_AGENT: ${{ vars.HTTP_USER_AGENT || format('CuriousThings/1.0 (github.com/{0})', github.repository) }}
+          LOG_FORMAT: json
+          LOG_LEVEL: INFO
+        run: |
+          set -o pipefail
+          MODE_FLAGS=""
+          case "${{ inputs.mode || 'send' }}" in
+            dry-run) MODE_FLAGS="--dry-run" ;;
+            review)  MODE_FLAGS="--review" ;;
+          esac
+          if [ "${{ inputs.force }}" = "true" ]; then
+            MODE_FLAGS="$MODE_FLAGS --force"
+          fi
+          # --allow-skip: "not a send day" and "nothing was good enough" are
+          # both correct outcomes, not build failures. A genuine error still
+          # exits non-zero and fails the job.
+          python -m src.main run $MODE_FLAGS --allow-skip
+
+      - name: Summarise the run
+        if: always()
+        run: |
+          {
+            echo "## Newsletter run"
+            echo
+            if [ -f output/edition.json ]; then
+              python - <<'PY'
+          import json, pathlib
+          data = json.loads(pathlib.Path("output/edition.json").read_text())
+          candidate = data.get("candidate", {})
+          scores = candidate.get("scores") or {}
+          print(f"**Issue #{data.get('issue_number')}** — {data.get('subject','')}")
+          print()
+          print(f"- Categories: {', '.join(candidate.get('categories', []))}")
+          print(f"- Editorial score: {scores.get('overall', 'n/a')}")
+          print(f"- Words: {len((data.get('article') or {}).get('story','').split())}+")
+          print(f"- Image: {(candidate.get('image') or {}).get('credit','')}")
+          PY
+            else
+              echo "_No edition was produced on this run._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the rendered edition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: edition-${{ github.run_number }}
+          path: |
+            output/*.html
+            output/*.json
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Commit the updated history
+        # Only on the real schedule, and only when something actually changed.
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          if [ -z "$(git status --porcelain data/)" ]; then
+            echo "No database changes to commit."
+            exit 0
+          fi
+          git config user.name  "curious-things[bot]"
+          git config user.email "curious-things[bot]@users.noreply.github.com"
+          git add data/
+          git commit -m "chore: record edition history [skip ci]"
+          # Another run may have pushed while we worked; rebase and retry.
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "Push failed (attempt $attempt); rebasing and retrying."
+            git pull --rebase --autostash || true
+            sleep $((attempt * 5))
+          done
+          echo "::warning::Could not push the updated history. The next run will "\
+               "re-derive what it can, but duplicate protection is weaker until this "\
+               "is resolved."

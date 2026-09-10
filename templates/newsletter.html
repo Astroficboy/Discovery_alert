@@ -1,0 +1,235 @@
+{#-
+  A Curious Thing - HTML email template.
+
+  Constraints this template is written against, and why it looks like 2004:
+  * Outlook (Word rendering engine) supports no flexbox, no grid, and ignores
+    most external CSS - hence tables and inline styles.
+  * Gmail strips <style> in some contexts and all of it in the clipped view,
+    so every rule that matters is inlined; the <style> block only carries the
+    progressive enhancements (media queries, dark mode) that are safe to lose.
+  * Apple Mail and iOS auto-invert; the dark-mode block keeps that legible.
+  * 600px is the widest that survives every desktop client without scaling.
+-#}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="x-apple-disable-message-reformatting" />
+<meta name="color-scheme" content="light dark" />
+<meta name="supported-color-schemes" content="light dark" />
+<title>{{ article.title }}</title>
+<!--[if mso]>
+<style type="text/css">
+  body, table, td, p, a, span { font-family: Georgia, 'Times New Roman', serif !important; }
+</style>
+<![endif]-->
+<style type="text/css">
+  body { margin:0 !important; padding:0 !important; width:100% !important; }
+  img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+  a { color:{{ theme.link }}; }
+  .ct-body { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  @media only screen and (max-width:620px) {
+    .ct-wrap   { width:100% !important; }
+    .ct-pad    { padding-left:22px !important; padding-right:22px !important; }
+    .ct-title  { font-size:29px !important; line-height:1.18 !important; }
+    .ct-story  { font-size:17px !important; line-height:1.68 !important; }
+    .ct-hide-sm { display:none !important; }
+  }
+  @media (prefers-color-scheme: dark) {
+    .ct-body, .ct-canvas { background:#14130f !important; }
+    .ct-card    { background:#1c1a16 !important; }
+    .ct-ink     { color:#ece7dd !important; }
+    .ct-ink-soft{ color:#a9a294 !important; }
+    .ct-rule    { border-color:#33302a !important; }
+    .ct-panel   { background:#221f1a !important; }
+    .ct-masthead-rule { border-color:#3a362e !important; }
+  }
+</style>
+</head>
+<body class="ct-body" style="margin:0; padding:0; background:{{ theme.canvas }}; color:{{ theme.ink }};">
+
+{#- Preheader: the grey line most inboxes show beside the subject. -#}
+<div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:{{ theme.canvas }};">
+  {{ preheader }}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+</div>
+
+<table role="presentation" class="ct-canvas" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:{{ theme.canvas }};">
+<tr><td align="center" style="padding:28px 12px 44px 12px;">
+
+<table role="presentation" class="ct-wrap ct-card" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background:{{ theme.card }};">
+
+  {# ------------------------------------------------ MASTHEAD ---------- #}
+  <tr><td class="ct-pad" style="padding:34px 44px 20px 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="left" style="font-family:Georgia,'Times New Roman',serif; font-size:15px; letter-spacing:2.6px; text-transform:uppercase; color:{{ theme.ink }};" class="ct-ink">
+        {{ newsletter_name }}
+      </td>
+      <td align="right" style="font-family:Georgia,'Times New Roman',serif; font-size:12px; letter-spacing:1.6px; text-transform:uppercase; color:{{ theme.ink_soft }};" class="ct-ink-soft">
+        Issue&nbsp;#{{ '%03d'|format(issue_number) }}
+      </td>
+    </tr>
+    </table>
+  </td></tr>
+  <tr><td class="ct-pad" style="padding:0 44px;">
+    <div class="ct-masthead-rule" style="border-top:2px solid {{ theme.rule_strong }}; font-size:0; line-height:0;">&nbsp;</div>
+  </td></tr>
+  <tr><td class="ct-pad" style="padding:10px 44px 0 44px; font-family:Georgia,'Times New Roman',serif; font-size:11.5px; letter-spacing:1.4px; text-transform:uppercase; color:{{ theme.ink_soft }};" class="ct-ink-soft">
+    {{ edition_date_display }}{% if category_label %} &nbsp;·&nbsp; {{ category_label }}{% endif %}
+  </td></tr>
+
+  {# ------------------------------------------------ HERO IMAGE -------- #}
+  <tr><td style="padding:26px 0 0 0;">
+    {% if image.page_url %}<a href="{{ image.page_url }}" style="text-decoration:none;">{% endif %}
+    <img src="{{ image.url }}" width="600" alt="{{ image_alt }}"
+         style="display:block; width:100%; max-width:600px; height:auto; border:0;" />
+    {% if image.page_url %}</a>{% endif %}
+  </td></tr>
+  {% if image_caption %}
+  <tr><td class="ct-pad" style="padding:11px 44px 0 44px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:12.5px; line-height:1.55; color:{{ theme.ink_soft }};" class="ct-ink-soft">
+    {{ image_caption }}
+  </td></tr>
+  {% endif %}
+
+  {# ------------------------------------------------ TITLE ------------- #}
+  <tr><td class="ct-pad" style="padding:30px 44px 0 44px;">
+    <h1 class="ct-title ct-ink" style="margin:0; font-family:Georgia,'Times New Roman',serif; font-size:34px; line-height:1.2; font-weight:normal; letter-spacing:-0.4px; color:{{ theme.ink }};">
+      {{ article.title }}
+    </h1>
+    {% if article.subtitle %}
+    <p class="ct-ink-soft" style="margin:14px 0 0 0; font-family:Georgia,'Times New Roman',serif; font-size:18px; line-height:1.5; font-style:italic; color:{{ theme.ink_soft }};">
+      {{ article.subtitle }}
+    </p>
+    {% endif %}
+  </td></tr>
+
+  {% if article.content_note %}
+  <tr><td class="ct-pad" style="padding:20px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="ct-panel" style="background:{{ theme.panel }};">
+      <tr><td style="padding:12px 16px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:13px; line-height:1.55; color:{{ theme.ink_soft }};" class="ct-ink-soft">
+        <strong style="letter-spacing:0.6px; text-transform:uppercase; font-size:11px;">A note before you read</strong><br />
+        {{ article.content_note }}
+      </td></tr>
+    </table>
+  </td></tr>
+  {% endif %}
+
+  {# ------------------------------------------------ HOOK -------------- #}
+  <tr><td class="ct-pad" style="padding:26px 44px 0 44px;">
+    <p class="ct-story ct-ink" style="margin:0; font-family:Georgia,'Times New Roman',serif; font-size:19.5px; line-height:1.6; color:{{ theme.ink }};">
+      {{ article.hook }}
+    </p>
+  </td></tr>
+
+  {# ------------------------------------------------ THE IMAGE --------- #}
+  {% if article.the_image %}
+  {{ section_heading('What you are looking at') }}
+  {{ paragraphs(article.the_image) }}
+  {% endif %}
+
+  {# ------------------------------------------------ STORY ------------- #}
+  {{ section_heading('The story') }}
+  {{ paragraphs(article.story) }}
+
+  {# ------------------------------------------------ BIGGER PICTURE ---- #}
+  {% if article.bigger_picture %}
+  {{ section_heading('Why it matters') }}
+  {{ paragraphs(article.bigger_picture) }}
+  {% endif %}
+
+  {# ------------------------------------------------ ONE MORE THING ---- #}
+  {% if article.one_more_thing %}
+  <tr><td class="ct-pad" style="padding:34px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="ct-panel" style="background:{{ theme.panel }};">
+      <tr><td style="padding:22px 26px; border-left:3px solid {{ theme.accent }};">
+        <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:{{ theme.ink_soft }}; padding-bottom:9px;">
+          One more thing
+        </div>
+        <div class="ct-ink" style="font-family:Georgia,'Times New Roman',serif; font-size:17px; line-height:1.66; color:{{ theme.ink }};">
+          {{ article.one_more_thing }}
+        </div>
+      </td></tr>
+    </table>
+  </td></tr>
+  {% endif %}
+
+  {# ------------------------------------------------ LISTEN ------------ #}
+  {% if article.listen %}
+  <tr><td class="ct-pad" style="padding:26px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid {{ theme.rule }};" class="ct-rule">
+      <tr><td style="padding:20px 26px;">
+        <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:{{ theme.ink_soft }}; padding-bottom:10px;">
+          Listen to this
+        </div>
+        <div class="ct-ink" style="font-family:Georgia,'Times New Roman',serif; font-size:17px; line-height:1.5; color:{{ theme.ink }};">
+          <a href="{{ article.listen.url }}" style="color:{{ theme.link }}; text-decoration:none; border-bottom:1px solid {{ theme.rule }};">{{ article.listen.artist }}{% if article.listen.track %} — {{ article.listen.track }}{% endif %}</a>
+        </div>
+        {% if article.listen.album or article.listen.year %}
+        <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:13px; line-height:1.5; color:{{ theme.ink_soft }}; padding-top:6px;">
+          {{ article.listen.album }}{% if article.listen.album and article.listen.year %} · {% endif %}{{ article.listen.year }}{% if article.listen.service %} · {{ article.listen.service }}{% endif %}
+        </div>
+        {% endif %}
+        {% if article.listen.note %}
+        <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:13px; line-height:1.6; color:{{ theme.ink_soft }}; padding-top:8px;">
+          {{ article.listen.note }}
+        </div>
+        {% endif %}
+      </td></tr>
+    </table>
+  </td></tr>
+  {% endif %}
+
+  {# ------------------------------------------------ MUSIC META -------- #}
+  {% if music_facts %}
+  <tr><td class="ct-pad" style="padding:22px 44px 0 44px;">
+    <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:12.5px; line-height:1.7; color:{{ theme.ink_soft }};">
+      {% for label, value in music_facts %}<strong style="font-weight:600;">{{ label }}:</strong> {{ value }}{% if not loop.last %} &nbsp;·&nbsp; {% endif %}{% endfor %}
+    </div>
+  </td></tr>
+  {% endif %}
+
+  {# ------------------------------------------------ CREDITS ----------- #}
+  <tr><td class="ct-pad" style="padding:38px 44px 0 44px;">
+    <div class="ct-rule" style="border-top:1px solid {{ theme.rule }}; font-size:0; line-height:0;">&nbsp;</div>
+  </td></tr>
+  <tr><td class="ct-pad" style="padding:22px 44px 0 44px;">
+    <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:{{ theme.ink_soft }}; padding-bottom:9px;">
+      Image credit
+    </div>
+    <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:13px; line-height:1.65; color:{{ theme.ink_soft }};">
+      {{ image.credit }}{% if image.page_url %}<br /><a href="{{ image.page_url }}" style="color:{{ theme.link }};">View the original record</a>{% endif %}
+      {% if image.license.url %}<br /><a href="{{ image.license.url }}" style="color:{{ theme.link }};">{{ image.license.name }}</a>{% endif %}
+    </div>
+  </td></tr>
+
+  {# ------------------------------------------------ SOURCES ----------- #}
+  {% if article.sources %}
+  <tr><td class="ct-pad" style="padding:26px 44px 0 44px;">
+    <div class="ct-ink-soft" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:1.8px; text-transform:uppercase; color:{{ theme.ink_soft }}; padding-bottom:10px;">
+      Sources &amp; further reading
+    </div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+    {% for source in article.sources[:8] %}
+      <tr><td style="padding:0 0 8px 0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:13.5px; line-height:1.6; color:{{ theme.ink_soft }};" class="ct-ink-soft">
+        <a href="{{ source.url }}" style="color:{{ theme.link }}; text-decoration:none; border-bottom:1px solid {{ theme.rule }};">{{ source.title }}</a>{% if source.publisher %} <span style="color:{{ theme.ink_soft }};">— {{ source.publisher }}</span>{% endif %}
+      </td></tr>
+    {% endfor %}
+    </table>
+  </td></tr>
+  {% endif %}
+
+  {# ------------------------------------------------ FOOTER ------------ #}
+  <tr><td class="ct-pad" style="padding:34px 44px 0 44px;">
+    <div class="ct-rule" style="border-top:1px solid {{ theme.rule }}; font-size:0; line-height:0;">&nbsp;</div>
+  </td></tr>
+  <tr><td class="ct-pad" align="center" style="padding:20px 44px 38px 44px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size:12.5px; line-height:1.7; color:{{ theme.ink_soft }};">
+    <span class="ct-ink-soft">{{ sign_off }}</span>
+    {% if footer_note %}<br /><span class="ct-ink-soft" style="font-size:11.5px;">{{ footer_note }}</span>{% endif %}
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

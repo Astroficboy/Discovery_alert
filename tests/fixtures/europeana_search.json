@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "itemsCount": 2,
+  "items": [
+    {
+      "id": "/2048221/data_item_1",
+      "guid": "https://www.europeana.eu/item/2048221/data_item_1",
+      "title": ["Hurdy-gurdy from Hungary"],
+      "dcDescription": ["A hurdy-gurdy built in 1903, with a carved head."],
+      "dcCreator": ["Unknown maker"],
+      "edmIsShownBy": ["https://media.example.eu/hurdygurdy_full.jpg"],
+      "edmPreview": ["https://media.example.eu/hurdygurdy_thumb.jpg"],
+      "rights": ["http://creativecommons.org/publicdomain/mark/1.0/"],
+      "dataProvider": ["Museum of Ethnography, Budapest"],
+      "country": ["Hungary"],
+      "year": ["1903"]
+    },
+    {
+      "id": "/2048221/data_item_2",
+      "title": ["A restricted item"],
+      "edmIsShownBy": ["https://media.example.eu/restricted.jpg"],
+      "rights": ["http://creativecommons.org/licenses/by-nc-nd/4.0/"],
+      "dataProvider": ["A museum"]
+    }
+  ]
+}

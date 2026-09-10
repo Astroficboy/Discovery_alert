@@ -1,0 +1,714 @@
+{
+  "_comment": [
+    "Offline safety net for the discovery stage, and the sample data the test",
+    "suite runs against. Images are referenced through Wikimedia Commons'",
+    "Special:FilePath endpoint, which resolves a file by name. Every entry is",
+    "still put through the licence gate and the live image check before it can",
+    "be published - nothing here is trusted just because it is bundled.",
+    "Add your own entries freely; the schema is whatever BundledFixtures reads."
+  ],
+  "candidates": [
+    {
+      "title": "Earthrise",
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/NASA-Apollo8-Dec24-Earthrise.jpg?width=1400",
+      "page_url": "https://commons.wikimedia.org/wiki/File:NASA-Apollo8-Dec24-Earthrise.jpg",
+      "image_title": "Earthrise, Apollo 8",
+      "description": "The Earth photographed from lunar orbit by the crew of Apollo 8 on 24 December 1968. The mission had launched to photograph the Moon; the picture that changed things was the one taken by accident, out of the side window, of home.",
+      "creator": "William Anders, NASA",
+      "created": "1968-12-24",
+      "institution": "NASA",
+      "license": "Public domain (work of the U.S. federal government)",
+      "categories": [
+        "space",
+        "photography",
+        "history",
+        "exploration"
+      ],
+      "width": 1400,
+      "height": 1400,
+      "research_leads": [
+        "https://www.nasa.gov/history/",
+        "https://en.wikipedia.org/wiki/Earthrise"
+      ],
+      "research": {
+        "core_question": "Why was the most consequential photograph of the twentieth century taken by accident?",
+        "summary": "Apollo 8 launched in December 1968 to orbit the Moon and photograph potential landing sites; the mission plan had the spacecraft oriented so that the crew's windows faced the lunar surface. On the fourth orbit a roll manoeuvre brought the Earth into view above the lunar horizon. Frank Borman saw it first; William Anders photographed it, on colour film he had to ask Jim Lovell to find. The frame, AS8-14-2383, was not on the shot list. It was published within days and is widely credited with giving the emerging environmental movement its central image.",
+        "claims": [
+          {
+            "text": "Apollo 8 was the first crewed mission to leave low Earth orbit and orbit the Moon, launching on 21 December 1968.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.nasa.gov/history/",
+              "https://en.wikipedia.org/wiki/Earthrise"
+            ]
+          },
+          {
+            "text": "The photograph catalogued as AS8-14-2383 was taken by William Anders on 24 December 1968 during the mission's fourth lunar orbit.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.nasa.gov/history/",
+              "https://en.wikipedia.org/wiki/Earthrise"
+            ]
+          },
+          {
+            "text": "The photograph was not part of the mission's planned photographic sequence.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.nasa.gov/history/",
+              "https://en.wikipedia.org/wiki/Earthrise"
+            ],
+            "note": "Established from the onboard voice transcript, in which the crew scramble for colour film."
+          },
+          {
+            "text": "The image is frequently credited with catalysing the modern environmental movement, and appeared on a United States postage stamp in 1969.",
+            "confidence": "plausible",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Earthrise"
+            ],
+            "note": "The causal claim is an interpretation widely repeated by historians rather than a measurable fact."
+          }
+        ],
+        "sources": [
+          {
+            "title": "Apollo 8 mission history",
+            "url": "https://www.nasa.gov/history/",
+            "publisher": "NASA",
+            "authority": 95
+          },
+          {
+            "title": "Earthrise",
+            "url": "https://en.wikipedia.org/wiki/Earthrise",
+            "publisher": "Wikipedia",
+            "authority": 50
+          },
+          {
+            "title": "Apollo image archive",
+            "url": "https://www.jpl.nasa.gov/",
+            "publisher": "NASA",
+            "authority": 95
+          }
+        ],
+        "entities": [
+          "Apollo 8",
+          "William Anders",
+          "Frank Borman",
+          "Jim Lovell",
+          "NASA"
+        ],
+        "keywords": [
+          "apollo",
+          "earthrise",
+          "lunar orbit",
+          "photography",
+          "1968",
+          "environmental movement"
+        ],
+        "timeline": [
+          "1968-12-21 - Apollo 8 launches",
+          "1968-12-24 - Earthrise photographed on the fourth orbit",
+          "1969 - the image appears on a US postage stamp"
+        ],
+        "the_surprising_thing": "The colour film used for the photograph was not loaded in the camera; Anders had to ask for a magazine of it while the Earth was already in the window."
+      }
+    },
+    {
+      "title": "Pale Blue Dot",
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Pale_Blue_Dot.png?width=1400",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Pale_Blue_Dot.png",
+      "image_title": "Pale Blue Dot",
+      "description": "Earth as a single bright pixel in a band of scattered sunlight, photographed by Voyager 1 on 14 February 1990 from beyond the orbit of Neptune, at the end of a campaign Carl Sagan had spent years arguing for.",
+      "creator": "NASA / JPL-Caltech",
+      "created": "1990-02-14",
+      "institution": "NASA Jet Propulsion Laboratory",
+      "license": "Public domain (NASA)",
+      "categories": [
+        "space",
+        "science",
+        "photography",
+        "people"
+      ],
+      "width": 1400,
+      "height": 1400,
+      "research_leads": [
+        "https://www.jpl.nasa.gov/",
+        "https://en.wikipedia.org/wiki/Pale_Blue_Dot"
+      ],
+      "research": {
+        "core_question": "Why did NASA spend a decade arguing about whether to take a photograph of nothing?",
+        "summary": "Carl Sagan proposed in 1981 that Voyager 1, having finished its planetary encounters, should turn its camera back towards the inner solar system. The proposal was resisted: pointing the camera near the Sun risked the vidicon tubes, and the resulting image would carry no scientific data. It was finally executed on 14 February 1990 from about six billion kilometres out. Earth occupies less than a pixel, and happens to fall inside a band of scattered sunlight caused by the camera optics.",
+        "claims": [
+          {
+            "text": "The image was acquired by Voyager 1 on 14 February 1990 from a distance of roughly six billion kilometres.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.jpl.nasa.gov/",
+              "https://en.wikipedia.org/wiki/Pale_Blue_Dot"
+            ]
+          },
+          {
+            "text": "Earth occupies less than a single pixel in the frame.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.jpl.nasa.gov/",
+              "https://en.wikipedia.org/wiki/Pale_Blue_Dot"
+            ]
+          },
+          {
+            "text": "The photograph was proposed by Carl Sagan and had no scientific objective.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Pale_Blue_Dot",
+              "https://www.jpl.nasa.gov/"
+            ]
+          },
+          {
+            "text": "The bands of light in which Earth sits are scattered sunlight in the camera optics, not a real feature of space.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.jpl.nasa.gov/",
+              "https://en.wikipedia.org/wiki/Pale_Blue_Dot"
+            ]
+          },
+          {
+            "text": "The cameras were switched off shortly after the portrait to conserve power.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.jpl.nasa.gov/",
+              "https://en.wikipedia.org/wiki/Pale_Blue_Dot"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "title": "Voyager mission pages",
+            "url": "https://www.jpl.nasa.gov/",
+            "publisher": "NASA",
+            "authority": 95
+          },
+          {
+            "title": "Pale Blue Dot",
+            "url": "https://en.wikipedia.org/wiki/Pale_Blue_Dot",
+            "publisher": "Wikipedia",
+            "authority": 50
+          },
+          {
+            "title": "NASA history",
+            "url": "https://www.nasa.gov/history/",
+            "publisher": "NASA",
+            "authority": 95
+          }
+        ],
+        "entities": [
+          "Voyager 1",
+          "Carl Sagan",
+          "JPL",
+          "Neptune"
+        ],
+        "keywords": [
+          "voyager",
+          "pale blue dot",
+          "carl sagan",
+          "1990",
+          "solar system portrait"
+        ],
+        "timeline": [
+          "1981 - Sagan first proposes the portrait",
+          "1990-02-14 - the images are taken",
+          "1990-06 - the mosaic is released"
+        ],
+        "the_surprising_thing": "The camera was never used again: Voyager's imaging system was powered down weeks later, and the Pale Blue Dot is among the last photographs it ever took."
+      }
+    },
+    {
+      "title": "The Antikythera mechanism",
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/NAMA_Machine_d%27Anticyth%C3%A8re_1.jpg?width=1400",
+      "page_url": "https://commons.wikimedia.org/wiki/File:NAMA_Machine_d%27Anticyth%C3%A8re_1.jpg",
+      "image_title": "Fragment A of the Antikythera mechanism",
+      "description": "A corroded lump of bronze recovered from a Roman-era shipwreck off the island of Antikythera in 1901. It contains gear trains of a precision that would not be seen again in Europe for well over a thousand years.",
+      "creator": "Marsyas",
+      "created": "2006",
+      "institution": "National Archaeological Museum, Athens",
+      "license": "CC BY-SA 2.5",
+      "categories": [
+        "history",
+        "engineering",
+        "science",
+        "technology"
+      ],
+      "width": 1400,
+      "height": 1050,
+      "research_leads": [
+        "https://www.nature.com/",
+        "https://en.wikipedia.org/wiki/Antikythera_mechanism"
+      ],
+      "research": {
+        "core_question": "How did a Greek shipwreck produce a geared astronomical calculator two millennia before anything comparable?",
+        "summary": "Sponge divers working off Antikythera in 1901 recovered a corroded bronze lump from a first-century-BC wreck. It sat in the National Archaeological Museum in Athens for decades before X-ray and, later, microfocus computed tomography revealed at least thirty interlocking gears. The mechanism modelled the positions of the Sun and Moon, tracked the Metonic and Saros cycles, and displayed the schedule of Panhellenic games. Nothing of comparable gearing complexity survives from Europe until the astronomical clocks of the fourteenth century.",
+        "claims": [
+          {
+            "text": "The mechanism was recovered from a shipwreck off the island of Antikythera in 1901.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Antikythera_mechanism",
+              "https://www.nature.com/"
+            ]
+          },
+          {
+            "text": "Imaging has identified at least thirty surviving bronze gears in the fragments.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.nature.com/",
+              "https://en.wikipedia.org/wiki/Antikythera_mechanism"
+            ]
+          },
+          {
+            "text": "The device tracked the Metonic cycle and predicted eclipses using the Saros cycle.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.nature.com/",
+              "https://en.wikipedia.org/wiki/Antikythera_mechanism"
+            ]
+          },
+          {
+            "text": "One dial records the four-year cycle of Panhellenic games, including the Olympics.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.nature.com/",
+              "https://en.wikipedia.org/wiki/Antikythera_mechanism"
+            ]
+          },
+          {
+            "text": "The mechanism was built in Rhodes, possibly in a tradition associated with Hipparchus or Posidonius.",
+            "confidence": "speculative",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Antikythera_mechanism"
+            ],
+            "note": "Attribution is inferred from the astronomical model used, not from any inscription naming a maker."
+          }
+        ],
+        "sources": [
+          {
+            "title": "Decoding the ancient Greek astronomical calculator",
+            "url": "https://www.nature.com/",
+            "publisher": "Nature",
+            "authority": 93
+          },
+          {
+            "title": "Antikythera mechanism",
+            "url": "https://en.wikipedia.org/wiki/Antikythera_mechanism",
+            "publisher": "Wikipedia",
+            "authority": 50
+          },
+          {
+            "title": "National Archaeological Museum, Athens",
+            "url": "https://www.britishmuseum.org/",
+            "publisher": "British Museum",
+            "authority": 92
+          }
+        ],
+        "entities": [
+          "Antikythera",
+          "National Archaeological Museum",
+          "Hipparchus",
+          "Metonic cycle",
+          "Saros cycle"
+        ],
+        "keywords": [
+          "antikythera",
+          "gears",
+          "astronomy",
+          "shipwreck",
+          "bronze",
+          "calendar",
+          "eclipse"
+        ],
+        "timeline": [
+          "c. 100 BC - the mechanism is built",
+          "1901 - sponge divers recover the wreck",
+          "1974 - Derek de Solla Price publishes a gear reconstruction",
+          "2006 - CT imaging reveals the inscriptions"
+        ],
+        "the_surprising_thing": "The inscriptions include a user manual, engraved on the bronze plates that covered the dials."
+      }
+    },
+    {
+      "title": "The Theremin",
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Theremin.jpg?width=1400",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Theremin.jpg",
+      "image_title": "A theremin",
+      "description": "An instrument played without being touched: two antennas, one controlling pitch and one controlling volume, responding to the capacitance of the player's hands moving through the air around them.",
+      "creator": "Unknown",
+      "created": "c. 1930",
+      "institution": "Wikimedia Commons",
+      "license": "Public domain",
+      "categories": [
+        "music",
+        "technology",
+        "science",
+        "people"
+      ],
+      "width": 1400,
+      "height": 1000,
+      "music": {
+        "genre": [
+          "electronic",
+          "classical"
+        ],
+        "subgenre": [
+          "experimental_electronic"
+        ],
+        "era": [
+          "1920s",
+          "1930s"
+        ],
+        "country": [
+          "russia",
+          "united_states"
+        ],
+        "subjects": [
+          "instruments",
+          "technology",
+          "music_science"
+        ],
+        "artists": [
+          "Leon Theremin",
+          "Clara Rockmore"
+        ]
+      },
+      "research_leads": [
+        "https://www.loc.gov/",
+        "https://en.wikipedia.org/wiki/Theremin"
+      ],
+      "research": {
+        "core_question": "How did a Soviet experiment in measuring gas density become the only instrument played without touch?",
+        "summary": "Leon Theremin was working at the Physico-Technical Institute in Petrograd on a device to measure the dielectric constant of gases when he noticed that the pitch of an audio oscillator changed as his hand approached the circuit. He turned the artefact into an instrument: two antennas, one governing pitch and one volume, both responding to the capacitance of the player's body. Lenin is reported to have played it. RCA licensed it in 1929 and sold very few. Clara Rockmore, a violinist whose career had been ended by tendon trouble, became its definitive performer and pushed Theremin to make the instrument more responsive.",
+        "claims": [
+          {
+            "text": "The instrument arose from Leon Theremin's work on measuring the dielectric constant of gases at the Physico-Technical Institute around 1920.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Theremin",
+              "https://www.loc.gov/"
+            ]
+          },
+          {
+            "text": "It is played without physical contact, using the capacitance between the player's hands and two antennas to control pitch and volume.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.loc.gov/",
+              "https://en.wikipedia.org/wiki/Theremin"
+            ]
+          },
+          {
+            "text": "RCA manufactured a licensed version from 1929, which sold poorly.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Theremin",
+              "https://www.loc.gov/"
+            ]
+          },
+          {
+            "text": "Clara Rockmore, a trained violinist, developed the performance technique that established the instrument as a serious concert voice.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.loc.gov/",
+              "https://en.wikipedia.org/wiki/Theremin"
+            ]
+          },
+          {
+            "text": "Theremin returned to the Soviet Union in 1938 and later worked on covert listening devices for Soviet intelligence.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Theremin",
+              "https://www.loc.gov/"
+            ],
+            "note": "The circumstances of his departure from New York are disputed."
+          }
+        ],
+        "disagreements": [
+          {
+            "topic": "Whether Theremin left New York voluntarily",
+            "positions": [
+              "He was abducted by Soviet agents",
+              "He left of his own accord, in debt"
+            ],
+            "note": "Accounts differ; his own later statements were given under conditions that make them hard to weigh."
+          }
+        ],
+        "sources": [
+          {
+            "title": "Recorded sound collections",
+            "url": "https://www.loc.gov/",
+            "publisher": "Library of Congress",
+            "authority": 95
+          },
+          {
+            "title": "Theremin",
+            "url": "https://en.wikipedia.org/wiki/Theremin",
+            "publisher": "Wikipedia",
+            "authority": 50
+          },
+          {
+            "title": "Smithsonian collections",
+            "url": "https://www.si.edu/",
+            "publisher": "Smithsonian Institution",
+            "authority": 94
+          }
+        ],
+        "entities": [
+          "Leon Theremin",
+          "Clara Rockmore",
+          "RCA",
+          "Petrograd"
+        ],
+        "keywords": [
+          "theremin",
+          "electronic music",
+          "capacitance",
+          "clara rockmore",
+          "rca",
+          "1920s"
+        ],
+        "timeline": [
+          "1920 - Theremin demonstrates the instrument in Petrograd",
+          "1928 - US patent filed",
+          "1929 - RCA begins production",
+          "1938 - Theremin returns to the USSR"
+        ],
+        "the_surprising_thing": "The device Theremin later built for Soviet intelligence, the Great Seal bug, had no power source of its own and hung inside a carved plaque in the US ambassador's Moscow study for seven years."
+      }
+    },
+    {
+      "title": "Migrant Mother",
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Lange-MigrantMother02.jpg?width=1400",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Lange-MigrantMother02.jpg",
+      "image_title": "Destitute pea pickers in California",
+      "description": "Dorothea Lange's 1936 photograph for the Resettlement Administration, made in a pea-pickers' camp in Nipomo, California. The woman in it was not named in the caption for over forty years.",
+      "creator": "Dorothea Lange",
+      "created": "1936-03",
+      "institution": "Library of Congress, FSA/OWI Collection",
+      "license": "No known restrictions on publication",
+      "categories": [
+        "photography",
+        "history",
+        "people",
+        "culture"
+      ],
+      "width": 1400,
+      "height": 1750,
+      "research_leads": [
+        "https://www.loc.gov/pictures/collection/fsa/",
+        "https://en.wikipedia.org/wiki/Migrant_Mother"
+      ],
+      "research": {
+        "core_question": "Who was the woman in the most reproduced photograph of the Great Depression, and why did nobody ask for forty years?",
+        "summary": "Dorothea Lange made six exposures in a pea-pickers' camp at Nipomo, California, in March 1936, working for the Resettlement Administration. The frame that became famous was captioned only as a destitute pea picker, mother of seven, aged thirty-two. The woman was Florence Owens Thompson, a Cherokee born in Oklahoma. She was identified publicly in the late 1970s, and said she had received nothing for the photograph and disliked what it had made of her.",
+        "claims": [
+          {
+            "text": "The photograph was made by Dorothea Lange in March 1936 at a pea-pickers' camp in Nipomo, California, for the Resettlement Administration.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.loc.gov/pictures/collection/fsa/",
+              "https://en.wikipedia.org/wiki/Migrant_Mother"
+            ]
+          },
+          {
+            "text": "The negatives are held by the Library of Congress and carry no known publication restrictions.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.loc.gov/pictures/collection/fsa/",
+              "https://en.wikipedia.org/wiki/Migrant_Mother"
+            ]
+          },
+          {
+            "text": "The subject was Florence Owens Thompson, identified publicly in the late 1970s.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Migrant_Mother",
+              "https://www.loc.gov/pictures/collection/fsa/"
+            ]
+          },
+          {
+            "text": "Lange made six exposures in the encounter, moving progressively closer.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.loc.gov/pictures/collection/fsa/",
+              "https://en.wikipedia.org/wiki/Migrant_Mother"
+            ]
+          },
+          {
+            "text": "A thumb holding a tent pole was retouched out of the negative before wide publication.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.loc.gov/pictures/collection/fsa/",
+              "https://en.wikipedia.org/wiki/Migrant_Mother"
+            ],
+            "note": "Visible in the FSA file print; the alteration was not disclosed at the time."
+          }
+        ],
+        "sources": [
+          {
+            "title": "Farm Security Administration/Office of War Information photographs",
+            "url": "https://www.loc.gov/pictures/collection/fsa/",
+            "publisher": "Library of Congress",
+            "authority": 95
+          },
+          {
+            "title": "Migrant Mother",
+            "url": "https://en.wikipedia.org/wiki/Migrant_Mother",
+            "publisher": "Wikipedia",
+            "authority": 50
+          },
+          {
+            "title": "National Archives holdings",
+            "url": "https://www.archives.gov/",
+            "publisher": "U.S. National Archives",
+            "authority": 95
+          }
+        ],
+        "entities": [
+          "Dorothea Lange",
+          "Florence Owens Thompson",
+          "Nipomo",
+          "Resettlement Administration"
+        ],
+        "keywords": [
+          "dorothea lange",
+          "fsa",
+          "great depression",
+          "1936",
+          "california",
+          "documentary photography"
+        ],
+        "timeline": [
+          "1936-03 - Lange photographs the camp at Nipomo",
+          "1978 - Thompson is identified in the press"
+        ],
+        "the_surprising_thing": "The most famous documentary photograph of the era was retouched: a thumb at the lower edge of the frame was scraped off the negative.",
+        "content_notes": [
+          "The story concerns extreme poverty and hunger."
+        ]
+      }
+    },
+    {
+      "title": "A Javanese gamelan ensemble",
+      "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Gamelan1.jpg?width=1400",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Gamelan1.jpg",
+      "image_title": "Gamelan instruments",
+      "description": "A tuned bronze orchestra in which no two ensembles are tuned alike: gamelan sets are forged and tuned as a single object, so instruments from different sets cannot be played together.",
+      "creator": "Unknown",
+      "created": "Undated",
+      "institution": "Wikimedia Commons",
+      "license": "Public domain",
+      "categories": [
+        "music",
+        "culture",
+        "history"
+      ],
+      "width": 1400,
+      "height": 933,
+      "music": {
+        "genre": [
+          "world"
+        ],
+        "subgenre": [
+          "gamelan"
+        ],
+        "era": [],
+        "country": [
+          "indonesia"
+        ],
+        "subjects": [
+          "instruments",
+          "percussion",
+          "music_culture",
+          "music_science"
+        ],
+        "artists": []
+      },
+      "research_leads": [
+        "https://www.si.edu/",
+        "https://en.wikipedia.org/wiki/Gamelan"
+      ],
+      "research": {
+        "core_question": "Why can two gamelan orchestras never play together?",
+        "summary": "A gamelan is tuned as a single object rather than to a shared standard. The bronze keys and gongs of a set are forged and filed together, and the resulting tuning belongs to that set alone; two ensembles built in different workshops will be audibly incompatible. Javanese practice uses two scale systems, slendro and pelog, and many complete sets include instruments for both. Paired instruments are also deliberately tuned slightly apart, producing acoustic beating that gives the ensemble its shimmer.",
+        "claims": [
+          {
+            "text": "Gamelan sets are tuned as a unit, so instruments from different sets are generally not interchangeable.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Gamelan",
+              "https://www.si.edu/"
+            ]
+          },
+          {
+            "text": "Javanese gamelan uses two tuning systems, slendro and pelog.",
+            "confidence": "established",
+            "supporting_urls": [
+              "https://www.si.edu/",
+              "https://en.wikipedia.org/wiki/Gamelan"
+            ]
+          },
+          {
+            "text": "Paired instruments are tuned a few hertz apart to produce audible beating, known as ombak.",
+            "confidence": "well_evidenced",
+            "supporting_urls": [
+              "https://www.si.edu/",
+              "https://en.wikipedia.org/wiki/Gamelan"
+            ]
+          },
+          {
+            "text": "Claude Debussy heard a Javanese gamelan at the 1889 Paris Exposition, and the encounter is often linked to his later harmonic language.",
+            "confidence": "plausible",
+            "supporting_urls": [
+              "https://en.wikipedia.org/wiki/Gamelan"
+            ],
+            "note": "That he heard it is documented; the extent of the influence is an interpretation."
+          }
+        ],
+        "sources": [
+          {
+            "title": "Music collections",
+            "url": "https://www.si.edu/",
+            "publisher": "Smithsonian Institution",
+            "authority": 94
+          },
+          {
+            "title": "Gamelan",
+            "url": "https://en.wikipedia.org/wiki/Gamelan",
+            "publisher": "Wikipedia",
+            "authority": 50
+          },
+          {
+            "title": "World music archive",
+            "url": "https://folkways.si.edu/",
+            "publisher": "Smithsonian Folkways",
+            "authority": 94
+          }
+        ],
+        "entities": [
+          "Java",
+          "slendro",
+          "pelog",
+          "Claude Debussy",
+          "Paris Exposition"
+        ],
+        "keywords": [
+          "gamelan",
+          "tuning",
+          "bronze",
+          "java",
+          "slendro",
+          "pelog",
+          "acoustics",
+          "ombak"
+        ],
+        "timeline": [
+          "1889 - a Javanese gamelan performs at the Paris Exposition Universelle"
+        ],
+        "the_surprising_thing": "The shimmer in a gamelan's sound is a manufacturing decision: paired instruments are tuned deliberately out of step so that their beat frequency becomes part of the timbre."
+      }
+    }
+  ]
+}

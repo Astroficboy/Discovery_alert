@@ -1,0 +1,84 @@
+{
+  "batchcomplete": true,
+  "query": {
+    "pages": [
+      {
+        "pageid": 12345,
+        "ns": 6,
+        "title": "File:Blast furnace at Voelklingen.jpg",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Blast_furnace.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Blast_furnace_at_Voelklingen.jpg",
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blast_furnace.jpg/1200px-Blast_furnace.jpg",
+            "thumbwidth": 1200,
+            "thumbheight": 800,
+            "width": 5200,
+            "height": 3467,
+            "size": 8123456,
+            "mime": "image/jpeg",
+            "user": "Uploader",
+            "extmetadata": {
+              "ObjectName": {"value": "Blast furnace at V&ouml;lklingen"},
+              "ImageDescription": {"value": "<p>The <b>abandoned</b> ironworks at V&ouml;lklingen, shut down in 1986 and left standing, machinery and all.</p>"},
+              "Artist": {"value": "<a href=\"https://commons.wikimedia.org/wiki/User:X\">A. Photographer</a>"},
+              "Credit": {"value": "Own work"},
+              "DateTimeOriginal": {"value": "2019-06-11"},
+              "LicenseShortName": {"value": "CC BY-SA 4.0"},
+              "License": {"value": "cc-by-sa-4.0"},
+              "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0/"},
+              "UsageTerms": {"value": "Creative Commons Attribution-Share Alike 4.0"},
+              "Categories": {"value": "Featured pictures of engineering and technology|Ironworks|Germany"}
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 12346,
+        "ns": 6,
+        "title": "File:Copyrighted press photo.jpg",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Press.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Copyrighted_press_photo.jpg",
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Press.jpg/1200px-Press.jpg",
+            "thumbwidth": 1200,
+            "thumbheight": 900,
+            "width": 2400,
+            "height": 1800,
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {"value": "A press photograph"},
+              "ImageDescription": {"value": "A photograph with restrictive terms."},
+              "Artist": {"value": "Agency"},
+              "LicenseShortName": {"value": "All rights reserved"},
+              "UsageTerms": {"value": "Editorial use only"}
+            }
+          }
+        ]
+      },
+      {
+        "pageid": 12347,
+        "ns": 6,
+        "title": "File:Tiny thumbnail.jpg",
+        "imageinfo": [
+          {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Tiny.jpg",
+            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Tiny_thumbnail.jpg",
+            "thumburl": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Tiny.jpg",
+            "thumbwidth": 320,
+            "thumbheight": 240,
+            "width": 320,
+            "height": 240,
+            "mime": "image/jpeg",
+            "extmetadata": {
+              "ObjectName": {"value": "A very small picture"},
+              "Artist": {"value": "Someone"},
+              "LicenseShortName": {"value": "CC0"}
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

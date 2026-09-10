@@ -1,0 +1,27 @@
+[
+  {
+    "date": "2026-09-08",
+    "title": "The Horsehead Nebula in Infrared",
+    "explanation": "The Horsehead Nebula is one of the most identifiable nebulae in the sky. It appears as a dark indentation to a red emission nebula in visible light, but in infrared the dust is largely transparent and the structure resolves into something unrecognisable.",
+    "hdurl": "https://apod.nasa.gov/apod/image/2609/Horsehead_Hubble_1500.jpg",
+    "url": "https://apod.nasa.gov/apod/image/2609/Horsehead_Hubble_960.jpg",
+    "media_type": "image",
+    "service_version": "v1"
+  },
+  {
+    "date": "2026-09-07",
+    "title": "A Photographer's Milky Way",
+    "explanation": "A wide-field view taken over three nights from a mountain ridge.",
+    "hdurl": "https://apod.nasa.gov/apod/image/2609/MilkyWay_Amateur_2000.jpg",
+    "url": "https://apod.nasa.gov/apod/image/2609/MilkyWay_Amateur_960.jpg",
+    "media_type": "image",
+    "copyright": "\nJane Astrophotographer\n"
+  },
+  {
+    "date": "2026-09-06",
+    "title": "A Video of Saturn",
+    "explanation": "A short animation assembled from Cassini frames.",
+    "url": "https://www.youtube.com/embed/xyz",
+    "media_type": "video"
+  }
+]

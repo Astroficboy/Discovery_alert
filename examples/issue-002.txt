@@ -1,0 +1,117 @@
+A CURIOUS THING
+Issue #002 · 3 January 2026 · Music + Technology + Science
+================================================================
+
+THE INSTRUMENT YOU PLAY BY NOT TOUCHING IT
+It began as a way to measure gas, and ended up inside the American ambassador's study in Moscow
+
+There is no keyboard, no string, no reed and no mouthpiece. There is a
+box, a vertical rod and a horizontal loop, and a performer standing in
+front of it moving their hands through empty air. Nothing is touched.
+The instrument was not designed to be an instrument at all.
+
+WHAT YOU ARE LOOKING AT
+----------------------------------------------------------------
+A wooden cabinet on legs with two protruding antennas. The upright rod
+governs pitch: the closer the player's right hand comes, the higher the
+note. The loop on the left governs volume, and works in reverse — hand
+near the loop means silence. Both respond to capacitance, the electrical
+property of a body occupying space near a circuit. The player is one
+plate of a capacitor. The instrument is the other.
+
+THE STORY
+----------------------------------------------------------------
+In about 1920, at the Physico-Technical Institute in Petrograd, a young
+physicist named Lev Sergeyevich Termen was building apparatus to measure
+the dielectric constant of gases under varying conditions. Part of the
+rig converted its readings into an audible tone, which was a common
+enough trick when instruments were read by ear rather than by dial.
+Termen noticed that the tone shifted as he moved his hand near the
+circuit. Anyone else would have logged it as interference and shielded
+the apparatus.
+
+He worked out the range instead, added a second oscillator, and taught
+himself to play it. He had trained as a cellist, which is why the
+fingering he developed is closer to string technique than to keyboard
+technique: there are no discrete notes to land on, only positions in the
+air that have to be found by ear and held by muscle memory. He
+demonstrated the instrument across the Soviet Union and then across
+Europe, and by 1928 he was in New York with a US patent.
+
+RCA licensed it and began production in 1929, marketing it as an
+instrument anyone could play, which was the opposite of true. Roughly
+five hundred were built. They sold badly, the Depression finished the
+market, and the theremin might have ended there as a curiosity with a
+short commercial life.
+
+What saved it was a violinist. Clara Rockmore, born in Vilnius and
+admitted to the St Petersburg Conservatory at five, had lost the use of
+her bow arm to a tendon condition and could not continue as a violinist.
+She took up the theremin in her twenties and treated it as a serious
+concert instrument rather than a novelty — which meant confronting the
+fact that it has no way of separating one note from the next. Her
+solution was an aerial fingering technique of considerable precision,
+and a series of demands on Termen for a faster volume response so that
+she could articulate notes at all. He rebuilt the instrument to her
+specification.
+
+In 1938 Termen left New York and returned to the Soviet Union. The
+circumstances are disputed: some accounts have him abducted by Soviet
+agents from his apartment, others have him leaving of his own accord,
+deep in debt and facing tax problems. What is documented is where he
+ended up — in a sharashka, a prison laboratory of the kind the Soviet
+state ran for scientists it wanted to use rather than waste.
+
+WHY IT MATTERS
+----------------------------------------------------------------
+The theremin is usually filed as a footnote in the history of electronic
+music, which undersells what it settled. It was the first instrument in
+which the sound had no mechanical origin at all: no vibrating string, no
+column of air, no struck surface. The note existed only as a voltage.
+Every synthesiser and every sampler that followed rests on that premise,
+and the theremin is where it was demonstrated in front of a paying
+audience.
+
+It also set the terms of a problem that electronic instruments have been
+working on ever since. A piano gives you a note when you press a key. An
+instrument controlled by a field gives you a continuum, and a continuum
+is much harder to play. Almost a century of interface design — keyboards
+bolted onto synthesisers, pitch wheels, ribbon controllers, touch
+surfaces — is an argument about how much of that continuum a player can
+actually use.
+
+ONE MORE THING
+----------------------------------------------------------------
+The device Termen built in the sharashka was a listening apparatus with
+no batteries, no wires and no power supply of its own: it did nothing
+until a radio beam was aimed at it from outside, at which point a
+membrane inside modulated the reflected signal with whatever was being
+said in the room. In 1945 a group of Soviet schoolchildren presented the
+US ambassador in Moscow with a carved wooden replica of the Great Seal
+of the United States. He hung it in his study. It stayed there for seven
+years.
+
+LISTEN TO THIS
+----------------------------------------------------------------
+Clara Rockmore — The Swan (Saint-Saëns)
+The Art of the Theremin · 1977
+https://archive.org/details/clara-rockmore
+
+Genre: Experimental Electronic
+Era: 1920s, 1930s
+Place: Russia, United States
+Subject: Instruments, Technology, Music Science
+IMAGE CREDIT
+----------------------------------------------------------------
+“A theremin” · Unknown · c. 1930 · Wikimedia Commons · Public domain
+Original record: https://commons.wikimedia.org/wiki/File:Theremin.jpg
+
+SOURCES & FURTHER READING
+----------------------------------------------------------------
+- Recorded Sound Research Center collections (Library of Congress)  https://www.loc.gov/rr/record/
+- Electronic instrument collections (Smithsonian Institution)  https://www.si.edu/
+- Theremin (Wikipedia)  https://en.wikipedia.org/wiki/Theremin
+- Clara Rockmore (Wikipedia)  https://en.wikipedia.org/wiki/Clara_Rockmore
+================================================================
+Next edition in 2 days.
+Sample edition, rendered from examples/ by scripts/build_examples.py
