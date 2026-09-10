@@ -29,6 +29,10 @@ packages = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+# Put the repository root on sys.path so `src` and `tests` import the same way
+# under bare `pytest` as under `python -m pytest`. Without this, bare `pytest`
+# fails at conftest import - which is exactly what CI runs.
+pythonpath = ["."]
 filterwarnings = ["error::DeprecationWarning:src.*"]
 
 [tool.ruff]
