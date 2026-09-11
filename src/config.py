@@ -13,6 +13,7 @@ Environment wins, because that is what GitHub Actions can set.
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 from typing import Any, Literal
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -340,6 +341,15 @@ def _split_recipients(raw: str | None) -> list[str]:
     return [p for p in parts if p]
 
 
+_DISPLAY_ADDRESS = re.compile(r"<([^>]+)>")
+
+
+def _bare_address(value: str) -> str:
+    """``"A Curious Thing <me@example.com>"`` -> ``me@example.com``."""
+    match = _DISPLAY_ADDRESS.search(value or "")
+    return (match.group(1) if match else value or "").strip()
+
+
 def load_config(path: str | Path | None = None, *, load_dotenv_file: bool = True) -> Config:
     """Read YAML + environment into a validated :class:`Config`.
 
@@ -392,7 +402,12 @@ def load_config(path: str | Path | None = None, *, load_dotenv_file: bool = True
     if provider := _env("EMAIL_PROVIDER"):
         email_cfg["provider"] = provider.lower()
     email_cfg["sender"] = _env("EMAIL_FROM", "") or ""
+    # A personal newsletter is usually sent to the person sending it, so an
+    # unset EMAIL_TO defaults to the sender rather than being an error. Set
+    # EMAIL_TO explicitly to send somewhere else.
     email_cfg["recipients"] = _split_recipients(_env("EMAIL_TO"))
+    if not email_cfg["recipients"] and email_cfg["sender"]:
+        email_cfg["recipients"] = [_bare_address(email_cfg["sender"])]
     email_cfg["reply_to"] = _env("EMAIL_REPLY_TO")
     email_cfg["credentials"] = {
         key: value

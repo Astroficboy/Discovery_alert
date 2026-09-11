@@ -323,7 +323,7 @@ no deliverability problem to solve.
 ```bash
 EMAIL_PROVIDER=smtp
 EMAIL_FROM="A Curious Thing <you@gmail.com>"
-EMAIL_TO=you@gmail.com
+EMAIL_TO=you@gmail.com          # optional - defaults to EMAIL_FROM
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USERNAME=you@gmail.com
@@ -331,8 +331,36 @@ SMTP_PASSWORD=<a Gmail App Password, not your account password>
 SMTP_SECURITY=starttls
 ```
 
-Gmail App Passwords: <https://myaccount.google.com/apppasswords> (requires
-two-factor authentication on the account).
+The four SMTP names are easy to misread, so plainly:
+
+| Variable | What it is | Gmail value |
+|---|---|---|
+| `SMTP_HOST` | the mail **server's** address — not an email address | `smtp.gmail.com` |
+| `SMTP_PORT` | 587 for STARTTLS, 465 for SSL | `587` |
+| `SMTP_USERNAME` | this one **is** your email address | `you@gmail.com` |
+| `SMTP_PASSWORD` | **not** your account password — an app-specific one | a 16-character App Password |
+
+Gmail (and most providers) reject account passwords over SMTP outright. Create
+an App Password at <https://myaccount.google.com/apppasswords>; it requires
+two-factor authentication on the account first.
+
+`EMAIL_TO` is optional: leave it unset and the newsletter goes to the address
+in `EMAIL_FROM`, which is usually what you want.
+
+If a run reports credentials missing that you believe you set, `doctor` prints
+which variables are actually visible to the process — names only, never
+values:
+
+```
+env email        +EMAIL_FROM -EMAIL_TO +EMAIL_PROVIDER
+env smtp         -SMTP_HOST -SMTP_PORT -SMTP_USERNAME -SMTP_PASSWORD
+                 + present   - not set (values are never printed)
+```
+
+A `-` against something you added means it is not reaching the workflow —
+usually because it went in as a **Codespaces** or **Dependabot** secret rather
+than an **Actions** secret. They are three separate tabs on the same settings
+page.
 
 Verify without sending anything:
 

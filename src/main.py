@@ -305,6 +305,8 @@ async def cmd_doctor(config: Config, args: argparse.Namespace) -> int:
     print(f"  config           config/config.yaml loaded, "
           f"{len(config.content.categories)} categories")
 
+    _print_environment()
+
     # Database
     try:
         database = Database(config.database_file)
@@ -392,6 +394,38 @@ async def cmd_doctor(config: Config, args: argparse.Namespace) -> int:
         return EXIT_CONFIG
     print("\nEverything checks out.\n")
     return EXIT_OK
+
+
+#: The environment this project reads, grouped for the doctor's report.
+#: Names only - values are never printed, and never logged.
+_ENVIRONMENT: dict[str, tuple[tuple[str, bool], ...]] = {
+    "llm": (("LLM_API_KEY", True), ("LLM_PROVIDER", False), ("LLM_MODEL", False)),
+    "email": (("EMAIL_FROM", True), ("EMAIL_TO", False), ("EMAIL_PROVIDER", False)),
+    "smtp": (("SMTP_HOST", False), ("SMTP_PORT", False), ("SMTP_USERNAME", False),
+             ("SMTP_PASSWORD", False)),
+    "api": (("RESEND_API_KEY", False), ("SENDGRID_API_KEY", False)),
+    "sources": (("NASA_API_KEY", False), ("SMITHSONIAN_API_KEY", False),
+                ("EUROPEANA_API_KEY", False)),
+    "runtime": (("TIMEZONE", False), ("DATABASE_PATH", False), ("HTTP_USER_AGENT", False)),
+}
+
+
+def _print_environment() -> None:
+    """Show which expected variables are visible to this process.
+
+    This answers the question that is otherwise very hard to answer from a CI
+    log: *is my secret actually reaching the workflow?* Only names and a
+    present/absent marker are printed - never a value, never a length.
+    """
+    import os
+
+    for group, entries in _ENVIRONMENT.items():
+        rendered = []
+        for name, _important in entries:
+            present = bool((os.environ.get(name) or "").strip())
+            rendered.append(f"{'+' if present else '-'}{name}")
+        print(f"  env {group:<12} " + " ".join(rendered))
+    print(f"  {_c('                 + present   - not set (values are never printed)', DIM)}")
 
 
 def _missing_email_settings(config: Config) -> list[str]:

@@ -120,3 +120,29 @@ def test_doctor_passes_when_configured(monkeypatch, tmp_path, capsys):
     monkeypatch.setenv("LLM_PROVIDER", "stub")
     assert main(["doctor"]) == EXIT_OK
     assert "Everything checks out" in capsys.readouterr().out
+
+
+def test_doctor_reports_which_variables_are_visible(monkeypatch, tmp_path, capsys):
+    """The diagnostic that answers 'is my secret reaching the workflow?'"""
+    monkeypatch.setenv("DATABASE_PATH", str(tmp_path / "cli.db"))
+    monkeypatch.setenv("EMAIL_PROVIDER", "console")
+    monkeypatch.setenv("EMAIL_FROM", "editor@example.com")
+    monkeypatch.setenv("LLM_PROVIDER", "stub")
+    monkeypatch.setenv("SMTP_PASSWORD", "a-real-looking-secret-value")
+    main(["doctor"])
+    out = capsys.readouterr().out
+    assert "+EMAIL_FROM" in out
+    assert "-SMTP_HOST" in out
+    assert "+SMTP_PASSWORD" in out
+    # The whole point: names are shown, values never are.
+    assert "a-real-looking-secret-value" not in out
+
+
+def test_doctor_accepts_a_sender_only_configuration(monkeypatch, tmp_path, capsys):
+    monkeypatch.setenv("DATABASE_PATH", str(tmp_path / "cli.db"))
+    monkeypatch.setenv("EMAIL_PROVIDER", "console")
+    monkeypatch.setenv("EMAIL_FROM", "editor@example.com")
+    monkeypatch.delenv("EMAIL_TO", raising=False)
+    monkeypatch.setenv("LLM_PROVIDER", "stub")
+    assert main(["doctor"]) == EXIT_OK
+    assert "editor@example.com -> editor@example.com" in capsys.readouterr().out

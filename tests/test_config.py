@@ -112,3 +112,25 @@ def _repo():
     from pathlib import Path
 
     return Path(__file__).resolve().parent.parent
+
+
+def test_email_to_defaults_to_the_sender(monkeypatch):
+    """A personal newsletter is normally sent to the person sending it."""
+    monkeypatch.delenv("EMAIL_TO", raising=False)
+    monkeypatch.setenv("EMAIL_FROM", "A Curious Thing <me@example.com>")
+    config = load_config(load_dotenv_file=False)
+    assert config.email.recipients == ["me@example.com"]
+
+
+def test_an_explicit_email_to_wins(monkeypatch):
+    monkeypatch.setenv("EMAIL_FROM", "A Curious Thing <me@example.com>")
+    monkeypatch.setenv("EMAIL_TO", "someone.else@example.com")
+    config = load_config(load_dotenv_file=False)
+    assert config.email.recipients == ["someone.else@example.com"]
+
+
+def test_no_sender_means_no_default_recipient(monkeypatch):
+    monkeypatch.delenv("EMAIL_TO", raising=False)
+    monkeypatch.delenv("EMAIL_FROM", raising=False)
+    config = load_config(load_dotenv_file=False)
+    assert config.email.recipients == []
