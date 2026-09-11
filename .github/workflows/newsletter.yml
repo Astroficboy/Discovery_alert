@@ -37,6 +37,10 @@ on:
         description: "Ignore the schedule and run anyway"
         type: boolean
         default: false
+      bypass_quality_gate:
+        description: "Publish even if the draft fails review (smoke test only)"
+        type: boolean
+        default: false
 
 # Never let two runs race for the database file.
 concurrency:
@@ -123,6 +127,10 @@ jobs:
           esac
           if [ "${{ inputs.force }}" = "true" ]; then
             MODE_FLAGS="$MODE_FLAGS --force"
+          fi
+          if [ "${{ inputs.bypass_quality_gate }}" = "true" ]; then
+            echo "::warning::Quality gate bypassed - this edition has NOT passed review."
+            MODE_FLAGS="$MODE_FLAGS --no-quality-gate"
           fi
           # --allow-skip: "not a send day" and "nothing was good enough" are
           # both correct outcomes, not build failures. A genuine error still

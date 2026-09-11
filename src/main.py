@@ -50,8 +50,14 @@ def _rule(char: str = "─", width: int = 66) -> str:
 async def cmd_run(config: Config, args: argparse.Namespace) -> int:
     from .pipeline import build_pipeline
 
+    if args.no_quality_gate:
+        logger.warning(
+            "--no-quality-gate: an edition that fails review will be published anyway. "
+            "Use this to smoke-test the plumbing, not to tune the newsletter."
+        )
     pipeline = build_pipeline(config, dry_run=args.dry_run, review=args.review,
-                              force=args.force, offline=args.offline)
+                              force=args.force, offline=args.offline,
+                              quality_gate=not args.no_quality_gate)
     try:
         outcome = await pipeline.run()
     finally:
@@ -492,6 +498,8 @@ def _print_outcome(config: Config, outcome: Any) -> None:
         print(f"  Email:     {run.email_status}")
     if outcome.skipped_reason:
         print(f"  Reason:    {outcome.skipped_reason}")
+    if bypass := run.stages.get("quality_gate_bypassed"):
+        print(f"  {_c('BYPASSED', BOLD)}   quality control was overridden - {bypass[:110]}")
     usage = run.stages.get("llm_usage") or {}
     if usage:
         print(f"  LLM:       {usage.get('calls', 0)} calls, "
@@ -529,6 +537,11 @@ def build_parser() -> argparse.ArgumentParser:
                      help="build the edition and hold it for approval")
     run.add_argument("--force", action="store_true",
                      help="ignore the schedule and run anyway")
+    run.add_argument("--no-quality-gate", action="store_true",
+                     help="publish even if the draft fails quality control. For "
+                          "smoke-testing the pipeline end to end; the edition is "
+                          "stamped as having bypassed review. To change the bar "
+                          "itself, edit content.min_quality_score instead")
     run.add_argument("--offline", action="store_true",
                      help="use the bundled candidates and bundled research; no archive "
                           "calls. Combine with LLM_PROVIDER=stub for a fully offline run")

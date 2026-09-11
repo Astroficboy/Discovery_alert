@@ -80,6 +80,13 @@ class Pipeline:
     #: Offline mode: bundled candidates and bundled dossiers, no outbound
     #: network beyond verifying the hero image (which is also skipped).
     offline: bool = False
+    #: When False, a draft that fails quality control is published anyway.
+    #: This exists to smoke-test the plumbing end to end - discovery through
+    #: delivery - without waiting on a story good enough to earn a send. It is
+    #: not a tuning knob: lower `content.min_quality_score` for that. Every
+    #: edition published this way is stamped in the footer, recorded in the run
+    #: log, and announced loudly, so it can never be mistaken for a real one.
+    quality_gate: bool = True
     llm: LLMClient | None = None
     email_provider: EmailProvider | None = None
     _owns_llm: bool = field(default=False, init=False)
@@ -301,6 +308,21 @@ class Pipeline:
 
                 reason = (f"quality {score} / combined {combined} below "
                           f"{threshold}: {'; '.join(quality.issues[:3])}")
+
+                if not self.quality_gate:
+                    candidate.article = article
+                    candidate.quality = quality
+                    run.stages["quality"] = report_log
+                    run.stages["quality_gate_bypassed"] = reason
+                    logger.warning(
+                        "QUALITY GATE BYPASSED - publishing a draft that failed review",
+                        title=article.title[:70], quality=score, combined=combined,
+                        blocking=len(quality.blocking_issues),
+                    )
+                    for issue in quality.issues[:6]:
+                        logger.warning("bypassed issue", issue=issue[:200])
+                    return candidate, article, quality
+
                 logger.warning("draft rejected", candidate_id=candidate.id, reason=reason[:280])
                 if rewrite < self.config.quality.max_regeneration_attempts:
                     revision_notes = (quality.fixes_requested or quality.issues)[:6]
@@ -414,6 +436,10 @@ class Pipeline:
             bits.append(f"Editorial score {candidate.scores.overall:.0f}")
         if self.config.llm.provider == "stub":
             bits.append("generated without a language model")
+        if not quality.passed:
+            # Only reachable with the gate bypassed. Say so on the edition
+            # itself, so a test send is unmistakable in the inbox.
+            bits.append("QUALITY GATE BYPASSED - this edition did not pass review")
         return " · ".join(bits) if bits else None
 
     def _edition_record(self, candidate: Candidate, article: Article, issue_number: int,
@@ -479,6 +505,7 @@ def _article_json(article: Article) -> str:
 
 def build_pipeline(config: Config, *, dry_run: bool = False, review: bool = False,
                    force: bool = False, offline: bool = False,
+                   quality_gate: bool = True,
                    database: Database | None = None) -> Pipeline:
     database = database or Database(config.database_file)
     if dry_run:
@@ -491,7 +518,8 @@ def build_pipeline(config: Config, *, dry_run: bool = False, review: bool = Fals
     else:
         provider = None
     return Pipeline(config=config, database=database, dry_run=dry_run, review=review,
-                    force=force, offline=offline, email_provider=provider)
+                    force=force, offline=offline, quality_gate=quality_gate,
+                    email_provider=provider)
 
 
 __all__ = ["Pipeline", "PipelineError", "PipelineOutcome", "build_pipeline"]

@@ -326,3 +326,69 @@ async def test_previously_sent_candidates_are_excluded_by_the_selector(config):
         result = await selector.select(candidates)
 
     assert all(c.id != candidates[0].id for c in result.ranked)
+
+
+# --------------------------------------------------------------------------- #
+# The quality-gate bypass
+# --------------------------------------------------------------------------- #
+@pytest.mark.asyncio
+async def test_bypass_publishes_a_failing_draft(offline_pipeline, config, database):
+    """--no-quality-gate exists to smoke-test the plumbing. It must publish a
+    draft that failed review, and say so loudly enough that the result can
+    never be mistaken for a real edition."""
+    bad = {**_replies(fixture_ids(config)),
+           "quality": {"accuracy": 30, "sourcing": 30, "writing": 20, "image_fit": 40,
+                       "safety_ok": True, "issues": ["invented a date"],
+                       "fixes_requested": [], "unsupported_claims": [],
+                       "notes": "Not publishable."}}
+    pipeline, _ = offline_pipeline(bad, force=True, quality_gate=False,
+                                   email_provider=ConsoleProvider())
+    outcome = await pipeline.run()
+
+    assert outcome.run.outcome == "sent"
+    assert outcome.sent is True
+    assert outcome.quality is not None and outcome.quality.passed is False
+    assert outcome.run.stages.get("quality_gate_bypassed")
+
+
+@pytest.mark.asyncio
+async def test_a_bypassed_edition_is_stamped_in_the_footer(offline_pipeline, config):
+    bad = {**_replies(fixture_ids(config)),
+           "quality": {"accuracy": 30, "sourcing": 30, "writing": 20, "image_fit": 40,
+                       "safety_ok": True, "issues": ["thin"], "fixes_requested": [],
+                       "unsupported_claims": [], "notes": ""}}
+    pipeline, _ = offline_pipeline(bad, dry_run=True, force=True, quality_gate=False,
+                                   email_provider=ConsoleProvider())
+    outcome = await pipeline.run()
+
+    assert outcome.rendered is not None
+    assert "QUALITY GATE BYPASSED" in outcome.rendered.html
+    assert "QUALITY GATE BYPASSED" in outcome.rendered.text
+
+
+@pytest.mark.asyncio
+async def test_the_gate_is_on_by_default(offline_pipeline, config, database):
+    """The bypass must be opt-in. A failing draft with no flag is still refused."""
+    bad = {**_replies(fixture_ids(config)),
+           "quality": {"accuracy": 30, "sourcing": 30, "writing": 20, "image_fit": 40,
+                       "safety_ok": True, "issues": ["thin"], "fixes_requested": [],
+                       "unsupported_claims": [], "notes": ""}}
+    pipeline, _ = offline_pipeline(bad, force=True, email_provider=ConsoleProvider())
+    outcome = await pipeline.run()
+
+    assert outcome.sent is False
+    assert outcome.run.outcome == "skipped"
+    assert not outcome.run.stages.get("quality_gate_bypassed")
+
+
+@pytest.mark.asyncio
+async def test_bypass_does_not_publish_a_passing_draft_differently(offline_pipeline, config):
+    """With the gate off, a draft that would have passed anyway takes the
+    normal path and is not stamped."""
+    pipeline, _ = offline_pipeline(dry_run=True, force=True, quality_gate=False,
+                                   email_provider=ConsoleProvider())
+    outcome = await pipeline.run()
+
+    assert outcome.quality is not None and outcome.quality.passed is True
+    assert not outcome.run.stages.get("quality_gate_bypassed")
+    assert "QUALITY GATE BYPASSED" not in (outcome.rendered.html if outcome.rendered else "")
