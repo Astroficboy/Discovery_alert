@@ -328,7 +328,13 @@ async def cmd_doctor(config: Config, args: argparse.Namespace) -> int:
             problems.append(f"llm: {exc}")
             print(f"  llm              {_c('FAIL', BOLD)} {exc}")
 
-    # Email
+    # Email. Addresses are checked independently of the provider, so a run
+    # reports every email problem at once rather than one per attempt.
+    if not config.email.sender:
+        problems.append("EMAIL_FROM is empty - there is nobody to send from")
+    if not config.email.recipients:
+        problems.append("EMAIL_TO is empty - there is nobody to send to")
+
     try:
         provider = build_provider(config)
         detail = ""
@@ -338,14 +344,14 @@ async def cmd_doctor(config: Config, args: argparse.Namespace) -> int:
                 problems.append(f"email: {detail}")
         await provider.aclose()
         recipients = ", ".join(config.email.recipients) or "(none)"
-        print(f"  email            {provider.name} -> {recipients} {_c(detail, DIM)}")
-        if not config.email.recipients:
-            problems.append("EMAIL_TO is empty - there is nobody to send to")
-        if not config.email.sender:
-            problems.append("EMAIL_FROM is empty")
+        sender = config.email.sender or "(none)"
+        print(f"  email            {provider.name}: {sender} -> {recipients} "
+              f"{_c(detail, DIM)}")
     except Exception as exc:  # noqa: BLE001
         problems.append(f"email: {exc}")
         print(f"  email            {_c('FAIL', BOLD)} {exc}")
+        for hint in _missing_email_settings(config):
+            problems.append(f"email: {hint}")
 
     # Sources
     async with HttpClient(user_agent=config.user_agent) as http:
@@ -386,6 +392,24 @@ async def cmd_doctor(config: Config, args: argparse.Namespace) -> int:
         return EXIT_CONFIG
     print("\nEverything checks out.\n")
     return EXIT_OK
+
+
+def _missing_email_settings(config: Config) -> list[str]:
+    """Name every setting the chosen provider still needs.
+
+    Without this, a misconfigured deployment surfaces one missing variable per
+    run, which turns setup into a guessing game against a 20-second CI job.
+    """
+    required = {
+        "smtp": [("SMTP_HOST", "smtp_host"), ("SMTP_USERNAME", "smtp_username"),
+                 ("SMTP_PASSWORD", "smtp_password")],
+        "resend": [("RESEND_API_KEY", "resend_api_key")],
+        "sendgrid": [("SENDGRID_API_KEY", "sendgrid_api_key")],
+    }.get(config.email.provider, [])
+    missing = [name for name, key in required if not config.email.credentials.get(key)]
+    if not missing:
+        return []
+    return [f"{config.email.provider} also needs: {', '.join(missing)}"]
 
 
 async def cmd_sources(config: Config, args: argparse.Namespace) -> int:

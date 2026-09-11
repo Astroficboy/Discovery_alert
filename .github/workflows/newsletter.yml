@@ -173,8 +173,11 @@ jobs:
           retention-days: 30
 
       - name: Commit the updated history
-        # Only on the real schedule, and only when something actually changed.
-        if: always() && github.event_name != 'pull_request'
+        # Only when the pipeline actually ran. A pre-flight failure means
+        # nothing happened, and committing the empty database the config check
+        # created just adds noise to the history.
+        if: always() && steps.pipeline.conclusion != 'skipped'
+             && github.event_name != 'pull_request'
         run: |
           if [ -z "$(git status --porcelain data/)" ]; then
             echo "No database changes to commit."
