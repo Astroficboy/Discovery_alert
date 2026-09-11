@@ -1,0 +1,35 @@
+{
+  "data": [
+    {
+      "id": 100411,
+      "title": "Nocturne: Blue and Gold",
+      "image_id": "b3974542-f9a1-4c93-1234-5d1f0e2b3c4d",
+      "is_public_domain": true,
+      "artist_display": "James McNeill Whistler\nAmerican, 1834-1903",
+      "date_display": "1872/78",
+      "medium_display": "Oil on canvas",
+      "classification_title": "Painting",
+      "place_of_origin": "England",
+      "department_title": "European Painting and Sculpture",
+      "term_titles": ["painting", "night", "river"],
+      "thumbnail": {"width": 3000, "height": 2400, "alt_text": "A dark riverscape at night."}
+    },
+    {
+      "id": 100412,
+      "title": "A copyrighted modern work",
+      "image_id": "cccc-dddd",
+      "is_public_domain": false,
+      "artist_display": "Someone Living",
+      "date_display": "1998",
+      "thumbnail": {"width": 2000, "height": 1500}
+    },
+    {
+      "id": 100413,
+      "title": "A public-domain record with no image",
+      "image_id": null,
+      "is_public_domain": true,
+      "date_display": "1901"
+    }
+  ],
+  "config": {"iiif_url": "https://www.artic.edu/iiif/2"}
+}

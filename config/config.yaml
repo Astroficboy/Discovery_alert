@@ -234,6 +234,36 @@ discovery:
     - name: europeana            # needs EUROPEANA_API_KEY
       enabled: true
       limit: 20
+
+    # --- keyless fallbacks -------------------------------------------------
+    # These need no credentials, and they absorb the quota of any keyed source
+    # that cannot run. A missing API key therefore costs breadth, not editions.
+    # Openverse is a search engine across ~100 providers of openly-licensed
+    # images; the two museums are open-access collections. All three return an
+    # explicit licence per record, which is what lets them through the
+    # copyright gate where a raw web scrape could not.
+    - name: openverse
+      enabled: true
+      limit: 20
+      options:
+        queries:
+          - "abandoned factory interior"
+          - "scientific instrument nineteenth century"
+          - "polar expedition photograph"
+          - "recording studio console"
+          - "traditional musical instrument"
+          - "industrial machinery archive"
+          - "observatory telescope historic"
+    - name: art_institute
+      enabled: true
+      limit: 15
+      options:
+        queries: [photograph, "scientific instrument", armor, "musical instrument"]
+    - name: cleveland_museum
+      enabled: true
+      limit: 15
+      options:
+        queries: [photograph, instrument, armor, manuscript]
     - name: fixtures             # bundled offline candidates; safety net only
       enabled: true
       limit: 6

@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "id": 1335,
+      "title": "Stringed Instrument (Sarod)",
+      "creation_date": "c. 1850",
+      "creators": [{"description": "Unknown maker (Indian)"}],
+      "culture": ["India, 19th century"],
+      "technique": "wood, gourd, metal strings",
+      "department": "Musical Instruments",
+      "share_license_status": "CC0",
+      "url": "https://www.clevelandart.org/art/1335",
+      "images": {
+        "web": {"url": "https://openaccess-cdn.clevelandart.org/1335/1335_web.jpg", "width": "1200", "height": "1600"},
+        "print": {"url": "https://openaccess-cdn.clevelandart.org/1335/1335_print.jpg", "width": "3000", "height": "4000"}
+      }
+    },
+    {
+      "id": 1336,
+      "title": "A restricted object",
+      "share_license_status": "Copyrighted",
+      "url": "https://www.clevelandart.org/art/1336",
+      "images": {"web": {"url": "https://openaccess-cdn.clevelandart.org/1336/web.jpg", "width": "1200", "height": "900"}}
+    }
+  ]
+}

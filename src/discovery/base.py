@@ -63,6 +63,9 @@ class DiscoverySource(abc.ABC):
     music_focused: ClassVar[bool] = False
     #: Name of the entry in ``config.source_api_keys`` this source needs.
     requires_key: ClassVar[str | None] = None
+    #: True for keyless sources that absorb the quota of a keyed source which
+    #: could not run. See :func:`src.discovery.redistribute_quota`.
+    fallback: ClassVar[bool] = False
 
     def __init__(self, config: Config, source_config: SourceConfig,
                  http: HttpClient) -> None:
@@ -77,6 +80,20 @@ class DiscoverySource(abc.ABC):
         """Return up to ``limit`` raw candidates. May raise; callers isolate."""
 
     # -- provided ------------------------------------------------------- #
+    @property
+    def available(self) -> bool:
+        """Whether this source can run at all.
+
+        Defers to :meth:`check_available` rather than testing for a key
+        directly, so a source that supplies its own default (NASA's DEMO_KEY,
+        for instance) is correctly reported as usable.
+        """
+        try:
+            self.check_available()
+        except SourceUnavailable:
+            return False
+        return True
+
     @property
     def api_key(self) -> str | None:
         if not self.requires_key:

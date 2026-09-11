@@ -1,0 +1,66 @@
+{
+  "result_count": 4,
+  "page_count": 1,
+  "results": [
+    {
+      "id": "aaa-111",
+      "title": "Control room of the Battersea Power Station, 1934",
+      "url": "https://images.example.org/battersea_control_room_full.jpg",
+      "thumbnail": "https://images.example.org/battersea_control_room_thumb.jpg",
+      "foreign_landing_url": "https://provider.example.org/photos/battersea",
+      "creator": "London Metropolitan Archives",
+      "license": "by-sa",
+      "license_version": "4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "provider": "flickr",
+      "source": "London Metropolitan Archives",
+      "filetype": "jpg",
+      "width": 3200,
+      "height": 2100,
+      "tags": [{"name": "art deco"}, {"name": "electricity"}, {"name": "abandoned"}]
+    },
+    {
+      "id": "bbb-222",
+      "title": "Gamelan orchestra, Yogyakarta",
+      "url": "https://images.example.org/gamelan_full.jpg",
+      "thumbnail": "https://images.example.org/gamelan_thumb.jpg",
+      "foreign_landing_url": "https://provider.example.org/photos/gamelan",
+      "creator": "Tropenmuseum",
+      "license": "pdm",
+      "license_version": "1.0",
+      "provider": "museum",
+      "source": "Tropenmuseum",
+      "filetype": "jpg",
+      "width": 2400,
+      "height": 1600,
+      "tags": [{"name": "gamelan"}, {"name": "indonesia"}, {"name": "bronze"}]
+    },
+    {
+      "id": "ccc-333",
+      "title": "A non-commercial photograph that must be refused",
+      "url": "https://images.example.org/nc.jpg",
+      "creator": "Someone",
+      "license": "by-nc",
+      "license_version": "4.0",
+      "provider": "flickr",
+      "source": "flickr",
+      "filetype": "jpg",
+      "width": 3000,
+      "height": 2000,
+      "tags": []
+    },
+    {
+      "id": "ddd-444",
+      "title": "An unrecognised licence code",
+      "url": "https://images.example.org/weird.jpg",
+      "creator": "Someone",
+      "license": "sampling+",
+      "provider": "flickr",
+      "source": "flickr",
+      "filetype": "jpg",
+      "width": 3000,
+      "height": 2000,
+      "tags": []
+    }
+  ]
+}

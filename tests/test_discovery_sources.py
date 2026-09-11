@@ -213,3 +213,152 @@ def test_bundled_fixtures_all_pass_the_licence_gate(config):
                 assert candidate.image.credit
 
     asyncio.run(check())
+
+
+# --------------------------------------------------------------------------- #
+# Keyless fallbacks
+# --------------------------------------------------------------------------- #
+@pytest.mark.asyncio
+async def test_openverse_keeps_only_licences_the_gate_accepts(config):
+    from src.discovery.openverse import Openverse
+
+    routes = {"api.openverse.org": load_fixture("openverse_search.json")}
+    candidates = await _run(Openverse, config, routes, options={"queries": ["power station"]})
+
+    titles = [c.title for c in candidates]
+    assert "Control room of the Battersea Power Station, 1934" in titles
+    assert "Gamelan orchestra, Yogyakarta" in titles
+    # Non-commercial and unrecognised codes never reach the funnel.
+    assert not any("must be refused" in t for t in titles)
+    assert not any("unrecognised" in t for t in titles)
+    assert all(c.image.license.reusable for c in candidates)
+
+
+@pytest.mark.asyncio
+async def test_openverse_builds_attribution_and_metadata(config):
+    from src.discovery.openverse import Openverse
+
+    routes = {"api.openverse.org": load_fixture("openverse_search.json")}
+    candidates = await _run(Openverse, config, routes, options={"queries": ["gamelan"]})
+    gamelan = next(c for c in candidates if "Gamelan" in c.title)
+
+    assert gamelan.is_music
+    assert gamelan.image.credit
+    assert gamelan.image.institution == "Tropenmuseum"
+    battersea = next(c for c in candidates if "Battersea" in c.title)
+    assert battersea.image.license.id == "cc-by-sa-4.0"
+    assert "London Metropolitan Archives" in (battersea.image.credit or "")
+
+
+@pytest.mark.asyncio
+async def test_openverse_needs_no_api_key(config):
+    from src.discovery.openverse import Openverse
+
+    routes = {"api.openverse.org": load_fixture("openverse_search.json")}
+    async with mock_http(routes) as http:
+        source = Openverse(config, SourceConfig(name="openverse", limit=5), http)
+        assert source.available is True
+        assert source.requires_key is None
+        assert source.fallback is True
+
+
+@pytest.mark.asyncio
+async def test_art_institute_takes_only_public_domain(config):
+    from src.discovery.museums import ArtInstituteOfChicago
+
+    routes = {"api.artic.edu": load_fixture("aic_search.json")}
+    candidates = await _run(ArtInstituteOfChicago, config, routes,
+                            options={"queries": ["painting"]})
+    assert [c.title for c in candidates] == ["Nocturne: Blue and Gold"]
+    candidate = candidates[0]
+    assert candidate.image.license.reusable
+    assert candidate.image.url.startswith("https://www.artic.edu/iiif/2/")
+    assert candidate.image.url.endswith("/full/1686,/0/default.jpg")
+    assert candidate.image.page_url == "https://www.artic.edu/artworks/100411"
+
+
+@pytest.mark.asyncio
+async def test_cleveland_takes_only_cc0(config):
+    from src.discovery.museums import ClevelandMuseumOfArt
+
+    routes = {"clevelandart.org": load_fixture("cma_search.json")}
+    candidates = await _run(ClevelandMuseumOfArt, config, routes,
+                            options={"queries": ["instrument"]})
+    assert [c.title for c in candidates] == ["Stringed Instrument (Sarod)"]
+    candidate = candidates[0]
+    assert candidate.is_music
+    assert candidate.image.width == 1200 and candidate.image.height == 1600
+    assert candidate.image.license.id == "cc0"
+
+
+# --------------------------------------------------------------------------- #
+# Quota redistribution
+# --------------------------------------------------------------------------- #
+@pytest.mark.asyncio
+async def test_missing_keys_hand_their_quota_to_keyless_sources(config):
+    """A missing API key should cost breadth, not editions."""
+    from src.discovery import redistribute_quota
+    from src.discovery.base import build_sources
+
+    config.source_api_keys.pop("smithsonian", None)
+    config.source_api_keys.pop("europeana", None)
+
+    async with mock_http({}) as http:
+        sources = [s for s in build_sources(config, http) if s.name != "fixtures"]
+        before = {s.name: s.source_config.limit for s in sources}
+        granted = redistribute_quota(sources)
+        after = {s.name: s.source_config.limit for s in sources}
+
+    assert granted, "keyless sources should have absorbed the orphaned quota"
+    assert set(granted) <= {"openverse", "art_institute", "cleveland_museum"}
+    for name, extra in granted.items():
+        assert after[name] == before[name] + extra
+    # Keyed and non-fallback sources are untouched.
+    assert after["wikimedia_potd"] == before["wikimedia_potd"]
+    assert after["smithsonian"] == before["smithsonian"]
+
+
+@pytest.mark.asyncio
+async def test_nothing_is_redistributed_when_every_key_is_present(config):
+    from src.discovery import redistribute_quota
+    from src.discovery.base import build_sources
+
+    config.source_api_keys.update({"smithsonian": "k", "europeana": "k", "nasa": "k"})
+    async with mock_http({}) as http:
+        sources = [s for s in build_sources(config, http) if s.name != "fixtures"]
+        assert redistribute_quota(sources) == {}
+
+
+@pytest.mark.asyncio
+async def test_nasa_demo_key_counts_as_available(config):
+    """NASA supplies its own default, so it must not look unavailable."""
+    from src.discovery.base import build_sources
+
+    config.source_api_keys.pop("nasa", None)
+    async with mock_http({}) as http:
+        sources = {s.name: s for s in build_sources(config, http)}
+        assert sources["nasa_apod"].available is True
+        assert sources["smithsonian"].available is False
+
+
+@pytest.mark.asyncio
+async def test_a_fallback_cannot_grow_without_bound(config):
+    """One archive dominating the pool is its own kind of failure."""
+    from src.discovery import MAX_FALLBACK_MULTIPLE, redistribute_quota
+    from src.discovery.base import build_sources
+
+    for entry in config.discovery.sources:
+        if entry.name in ("smithsonian", "europeana"):
+            entry.limit = 500
+    config.source_api_keys.pop("smithsonian", None)
+    config.source_api_keys.pop("europeana", None)
+
+    async with mock_http({}) as http:
+        sources = [s for s in build_sources(config, http) if s.name != "fixtures"]
+        before = {s.name: s.source_config.limit for s in sources}
+        redistribute_quota(sources)
+        for source in sources:
+            if source.fallback and source.available:
+                assert source.source_config.limit <= int(
+                    before[source.name] * MAX_FALLBACK_MULTIPLE
+                )

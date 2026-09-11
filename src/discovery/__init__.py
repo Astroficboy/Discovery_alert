@@ -21,7 +21,9 @@ from . import (  # noqa: E402,F401
     fixtures,
     loc,
     met,
+    museums,
     nasa,
+    openverse,
     smithsonian,
     wikimedia,
     wikipedia,
@@ -40,6 +42,53 @@ logger = get_logger(__name__)
 #: and let the bundled fixtures contribute.
 STARVATION_RATIO = 0.15
 
+#: No single fallback source may grow beyond this multiple of its configured
+#: limit, however many keyed sources are missing. One archive dominating the
+#: candidate pool is its own kind of failure.
+MAX_FALLBACK_MULTIPLE = 3.0
+
+
+def redistribute_quota(sources: list[DiscoverySource]) -> dict[str, int]:
+    """Hand the quota of unavailable keyed sources to the keyless ones.
+
+    A missing ``SMITHSONIAN_API_KEY`` should cost breadth, not editions. The
+    candidates that source would have contributed are instead requested from
+    the keyless search and museum sources, which need no credentials and whose
+    results still carry the explicit licences the copyright gate requires.
+
+    Returns a map of source name to the number of extra candidates granted,
+    for logging. Mutates each source's configured limit in place.
+    """
+    unavailable = [s for s in sources if not s.available]
+    if not unavailable:
+        return {}
+    fallbacks = [s for s in sources if s.fallback and s.available]
+    if not fallbacks:
+        logger.warning(
+            "sources are unavailable and no keyless fallback is enabled; "
+            "discovery will be narrower than configured",
+            unavailable=",".join(s.name for s in unavailable),
+        )
+        return {}
+
+    orphaned = sum(s.source_config.limit for s in unavailable)
+    share = max(1, orphaned // len(fallbacks))
+    granted: dict[str, int] = {}
+    for source in fallbacks:
+        original = source.source_config.limit
+        ceiling = int(original * MAX_FALLBACK_MULTIPLE)
+        source.source_config.limit = min(original + share, ceiling)
+        if extra := source.source_config.limit - original:
+            granted[source.name] = extra
+
+    logger.info(
+        "redistributed quota from unavailable sources to keyless ones",
+        unavailable=",".join(s.name for s in unavailable),
+        orphaned=orphaned,
+        granted=",".join(f"{name}+{n}" for name, n in sorted(granted.items())) or "none",
+    )
+    return granted
+
 
 async def discover_candidates(config: Config, http: HttpClient) -> list[Candidate]:
     """Run every enabled source and return a de-duplicated candidate pool."""
@@ -48,6 +97,8 @@ async def discover_candidates(config: Config, http: HttpClient) -> list[Candidat
         if not sources:
             logger.error("no discovery sources are enabled")
             return []
+
+        redistribute_quota([s for s in sources if s.name != "fixtures"])
 
         logger.info("starting discovery", sources=len(sources),
                     target=config.pipeline.discovery_target)
@@ -106,5 +157,6 @@ __all__ = [
     "available_sources",
     "build_sources",
     "discover_candidates",
+    "redistribute_quota",
     "register",
 ]

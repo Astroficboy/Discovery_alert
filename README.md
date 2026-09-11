@@ -42,20 +42,21 @@ and history, one music and technology. Open the `.html` files in a browser.
 7. [Email setup](#email-setup)
 8. [Running it locally](#running-it-locally)
 9. [Dry-run and review modes](#dry-run-and-review-modes)
-10. [GitHub Actions](#github-actions)
-11. [Scheduling](#scheduling)
-12. [Database and state](#database-and-state)
-13. [Image licensing](#image-licensing)
-14. [Music as a first-class domain](#music-as-a-first-class-domain)
-15. [Adding a discovery source](#adding-a-discovery-source)
-16. [Adding an LLM provider](#adding-an-llm-provider)
-17. [Adding an email provider](#adding-an-email-provider)
-18. [Security and prompt injection](#security-and-prompt-injection)
-19. [Cost](#cost)
-20. [Troubleshooting](#troubleshooting)
-21. [Testing](#testing)
-22. [Design decisions](#design-decisions)
-23. [Roadmap](#roadmap)
+10. [Keyless fallback](#keyless-fallback)
+11. [GitHub Actions](#github-actions)
+12. [Scheduling](#scheduling)
+13. [Database and state](#database-and-state)
+14. [Image licensing](#image-licensing)
+15. [Music as a first-class domain](#music-as-a-first-class-domain)
+16. [Adding a discovery source](#adding-a-discovery-source)
+17. [Adding an LLM provider](#adding-an-llm-provider)
+18. [Adding an email provider](#adding-an-email-provider)
+19. [Security and prompt injection](#security-and-prompt-injection)
+20. [Cost](#cost)
+21. [Troubleshooting](#troubleshooting)
+22. [Testing](#testing)
+23. [Design decisions](#design-decisions)
+24. [Roadmap](#roadmap)
 
 ---
 
@@ -63,9 +64,10 @@ and history, one music and technology. Open the `.html` files in a browser.
 
 Every other morning, the pipeline:
 
-1. **Discovers** ~120 candidate images from eleven public archives — Wikimedia
-   Commons, the Library of Congress, NASA, the Met, the Smithsonian, Europeana
-   and others.
+1. **Discovers** ~120 candidate images from fourteen public archives — Wikimedia
+   Commons, the Library of Congress, NASA, the Met, the Smithsonian, Europeana,
+   the Art Institute of Chicago, Cleveland Museum of Art, and Openverse's search
+   across ~100 further providers. Eleven of the fourteen need no API key.
 2. **Gates** every one of them on copyright. Anything without a positively
    identified, reuse-permitting licence is dropped before it costs anything.
 3. **Prefilters** to about two dozen using free heuristics — resolution,
@@ -302,7 +304,9 @@ good.
 Wikimedia Commons, Wikipedia, the Library of Congress and the Met need no key
 at all, and between them they carry the project.
 
-**A source with no key is skipped with a log line, never an error.**
+**A source with no key is skipped with a log line, never an error — and its
+quota is handed to the keyless sources.** See
+[Keyless fallback](#keyless-fallback).
 
 ---
 
@@ -619,6 +623,60 @@ and war — receive an explicit bonus, because they are the ones worth sending.
 [`examples/issue-002.html`](examples/issue-002.html) is a music edition.
 
 ---
+
+## Keyless fallback
+
+Eleven of the fourteen sources need no credentials at all. Only Smithsonian
+and Europeana require a key, and NASA merely prefers one.
+
+When a keyed source cannot run, the candidates it would have contributed are
+**not** simply lost. `redistribute_quota()` hands its quota to the keyless
+sources, capped so no single archive can come to dominate the pool:
+
+```
+$ python -m src.main doctor
+  sources          12/14 ready (14 registered)
+  warning  smithsonian: no API key configured (SMITHSONIAN_API_KEY); skipping
+
+# during the run:
+INFO  DISCOVERY  redistributed quota from unavailable sources to keyless ones
+                 unavailable=smithsonian,europeana  orphaned=40
+                 granted=art_institute+13,cleveland_museum+13,openverse+13
+```
+
+The load-bearing one is **Openverse** — a keyless search index over roughly a
+hundred providers of openly-licensed images (Flickr Commons, museum
+collections, government archives, Wikimedia). It is, in effect, a web image
+search that this project can actually use.
+
+### Why search rather than scrape
+
+A general web scrape was considered and rejected, for a reason specific to
+this project rather than a general objection:
+
+**The copyright gate needs a licence it can positively identify, and a scraped
+page almost never supplies one.** Images lifted from search results or crawled
+pages arrive with no machine-readable rights statement, so
+[`src/licensing.py`](src/licensing.py) refuses them — correctly. A scraper
+would spend time and bandwidth producing candidates that are all dropped one
+stage later.
+
+Openverse solves exactly that: it is a search engine whose every result
+carries an explicit licence field, filtered at the API to the four families
+this project accepts (`pdm`, `cc0`, `by`, `by-sa`). You get the reach of a
+search engine and keep the guarantee.
+
+Its material is more variable than a national archive's, so it carries a lower
+`authority` (62 against the Library of Congress's 95), which feeds the
+`source_quality` dimension and means its candidates must be better on other
+axes to win an edition.
+
+Note that **text scraping already happens** in the research stage — see
+[`src/research/researcher.py`](src/research/researcher.py), which fetches and
+reads institutional pages over the allowlist in
+[`src/net.py`](src/net.py). Widen it with `research.allowed_domains_extra` in
+config. That is scraping for *evidence*, where there is no licence to respect;
+the restriction is on scraping for *imagery*, where there is.
 
 ## Adding a discovery source
 
