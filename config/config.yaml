@@ -10,7 +10,7 @@ newsletter:
   name: "A Curious Thing"
   tagline: "One remarkable image. The story behind it."
   # Every alternate day.
-  frequency_days: 2
+  frequency_days: 1
   send_time: "08:00"
   timezone: "Asia/Kolkata"
   # Anchor date for the alternate-day rhythm (ISO date, reader's timezone).
